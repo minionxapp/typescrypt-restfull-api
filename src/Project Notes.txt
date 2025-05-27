@@ -1,0 +1,14 @@
+sumber dokumen :::
+https://docs.google.com/document/d/1CgU-1WEpZHpC2gdRm5sAsZNi44BY6FeSQ-M3R4Hsrmg/edit?tab=t.0
+
+https://docs.google.com/presentation/d/1Te5Wlu59j31Fe5Qjl5t_7PuTKWekyY_4kFatZAs_yvo/edit?slide=id.g269de56c678_0_174#slide=id.g269de56c678_0_174
+
+bila pada file database.ts masih ada error PrismaClient
+lakukan :: untuk Macbook
+
+rm -rf node_modules
+rm -rf .next
+npm install
+npx prisma generate
+
+menak=jalankam migrasi ::  npx prisma migrate dev
