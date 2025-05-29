@@ -56,5 +56,17 @@ export class UserController {
             next(error)
         }
     }
+
+    static async logout(req: UserRequest, res: Response, next: NextFunction) {
+        try {
+            //kirim ke serice
+            const response = await UserService.logout(req.user!)//!-->paksa ada
+            res.status(200).json({
+                data: 'OK'
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
