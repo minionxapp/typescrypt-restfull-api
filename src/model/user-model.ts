@@ -21,7 +21,8 @@ export type UpdateUserRequest ={
     password? : string;
 }
 
-//unutk data responsenya
+//unutk data responsenya 
+//unutk konversi dari user prisma menjadi user response
 export function toUserResponse(user: User):UserResponse{
     return {
         name:user.name,

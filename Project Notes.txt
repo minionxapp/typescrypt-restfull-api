@@ -22,3 +22,18 @@ git commit -m "first commit"
 git branch -M main
 git remote add origin https://github.com/minionxapp/typescrypt-restfull-api.git
 git push -u origin main
+
+urutan 
+1. schema  --> desain table
+2. api-spec
+3. model 
+   - request
+   - response
+   - toXxxxResponse --> tipe data yang dikirimkan
+4. validation
+5. service
+    service dan validation biasanya berbarengan
+6. controller
+7. route
+8. unit test 
+    - test util --> bila dibutuhkan mis nya pembuatan data dummy

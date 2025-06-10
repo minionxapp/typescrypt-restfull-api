@@ -8,12 +8,59 @@
 generator client {
   provider = "prisma-client-js"
   // output   = "../generated/prisma"
-  output   = "../node_modules/.prisma/client"  
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+//for development
+model DevProject {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(100)
+  desc String @db.VarChar(255)
+
+  @@map("dev_projects")
+}
+
+//email      String?   @db.VarChar(100)//? boleh ada null //perbaiki ya***********
+model Tablecoba {
+  id         Int     @id @default(autoincrement())
+  first_name String  @db.VarChar(100)
+  last_name  String? @db.VarChar(100)
+  email      String  @db.VarChar(100)
+  phone      String? @db.VarChar(20)
+  address    String? @db.VarChar(20)
+  username   String  @db.VarChar(20)
+
+  @@map("tablecobas")
+}
+
+model DevTable {
+  id         Int    @id @default(autoincrement())
+  project_id Int
+  name       String @db.VarChar(100)
+  desc       String @db.VarChar(255)
+
+  @@map("dev_tables")
+}
+
+model DevTableColumn {
+  id         Int    @id @default(autoincrement())
+  table_id   Int
+  table_name String @db.VarChar(100)
+  name       String @db.VarChar(100)
+  desc       String @db.VarChar(255)
+  type       String @db.VarChar(20) //varchar,numeric,date,time dll
+  length     Int    @default(1)
+  is_id      String @db.VarChar(2) //Yes,No
+  is_null    String @db.VarChar(2) //Yes,NO
+  is_uniq    String @db.VarChar(2) //Yesy, NO
+  default    String @db.VarChar(20)
+
+  @@map("dev_tables_column")
 }
 
 model User {
@@ -30,7 +77,7 @@ model Contact {
   id         Int       @id @default(autoincrement())
   first_name String    @db.VarChar(100)
   last_name  String    @db.VarChar(100)
-  email      String?   @db.VarChar(100)
+  email      String?   @db.VarChar(100) //? boleh ada null
   phone      String?   @db.VarChar(20)
   username   String    @db.VarChar(100)
   user       User      @relation(fields: [username], references: [username])

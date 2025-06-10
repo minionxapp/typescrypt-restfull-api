@@ -4,7 +4,10 @@
   "description": "Belajar restful api menggunakan typescript",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc",
+    "start": "tsc && node dist/main.js",
+     "dev": "concurrently \"npm run build\" \"npm run start\" "
   },
   "jest": {
     "transform": {
