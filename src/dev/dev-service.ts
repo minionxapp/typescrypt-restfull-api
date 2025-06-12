@@ -6,7 +6,7 @@ import { Util } from "../util/util";
 import { writeFileSync } from "fs";
 
 export class DevService {
-
+    // ambil kolom tabel
     static async getColoumn(tabelId: number): Promise<Array<DevTableColumnResponse>> {
         const result = await prismaClient.devTableColumn.findMany({
             where: {
@@ -15,6 +15,7 @@ export class DevService {
         })
         return result
     }
+    //ambil table
     static async getTable(tabelId: number): Promise<DevTableResponse> {
         const result = await prismaClient.devTable.findFirst({
             where: {
@@ -51,7 +52,7 @@ export class DevService {
         // console.log(model)
         return model
     }
-
+    // Create Model
     static async createModel(tabelId: number): Promise<String> {
         const table = await this.getTable(tabelId)
         const tableName = (await Util.capitalizeFirstLetter(table.name))
@@ -113,7 +114,7 @@ export class DevService {
 
         // //SearchRequest
         model = model + '//Search' + tableName + 'Request\n'
-        model = model + 'export type Search' + tableName + 'Request = {\nid: number,\n'
+        model = model + 'export type Search' + tableName + 'Request = {\n//id: number,\n'
         for (let index = 0; index < columns.length; index++) {
             const element = columns[index];
             if (element.type == 'Varchar') {
@@ -148,9 +149,7 @@ export class DevService {
     }
 
 
-    //Validation
-    //create validation
-
+    //Validation //create validation
     static async createValidation(tabelId: number): Promise<String> {
         const table = await this.getTable(tabelId)
         const tableName = (await Util.capitalizeFirstLetter(table.name))
@@ -178,7 +177,7 @@ export class DevService {
 
         //Update validation
         validatex = validatex + "//UPDATE validation\n"
-        validatex = validatex + 'static readonly UPDATE: ZodType = z.object({\n'
+        validatex = validatex + 'static readonly UPDATE: ZodType = z.object({\nid: z.number().positive(),\n'
         for (let index = 0; index < columns.length; index++) {
             const element = columns[index];
             if (element.type === 'Varchar') {
@@ -194,16 +193,17 @@ export class DevService {
         }
         validatex = validatex + '})\n\n'
 
-        //Update validation
+        //Search validation
         validatex = validatex + "//SEARCH validation\n"
         validatex = validatex + 'static readonly SEARCH: ZodType = z.object({\n'
         for (let index = 0; index < columns.length; index++) {
             const element = columns[index];
             if (element.type === 'Varchar') {
                 if (element.is_null === 'N')
-                    validatex = validatex + element.name + ': z.string().min(1).max(' + element.length + '),\n'
+                    //z.string().min(1).optional(),
+                    validatex = validatex + element.name + ': z.string().min(1).optional()' +',\n'
                 else
-                    validatex = validatex + element.name + ': z.string().max(' + element.length + ').optional(),\n'
+                    validatex = validatex + element.name + ': z.string()'  + '.optional(),\n'
             }
 
             if (element.type == 'Number') {
@@ -218,6 +218,7 @@ export class DevService {
 
     }
 
+    // Service
     static async createService(tabelId: number): Promise<String> {
         const table = await this.getTable(tabelId)
         const tableName = (await Util.capitalizeFirstLetter(table.name))
@@ -259,7 +260,7 @@ export class DevService {
             '}\n\n'
 
         servicex = servicex + '// GET\n'
-        servicex = servicex + ' static async get(id: number): Promise<' + tableName + 'Response> {\n' +
+        servicex = servicex + ' static async get(user: User,id: number): Promise<' + tableName + 'Response> {\n' +
             'const ' + (await Util.lowerFirstLetter(tableName)).toString() + ' = await this.check' + tableName + 'Mustexist(id)\n' +
             'return to' + tableName + 'Response(' + (await Util.lowerFirstLetter(tableName)).toString() + ')\n' +
             '}\n\n'
@@ -280,7 +281,7 @@ export class DevService {
             '}\n'
 
         servicex = servicex + "//REMOVE \n"
-        servicex = servicex + ' static async remove(/*user: User, */id: number): Promise<' + tableName + 'Response> {\n' +
+        servicex = servicex + ' static async remove(user: User, id: number): Promise<' + tableName + 'Response> {\n' +
             ' await this.check' + tableName + 'Mustexist( id)\n' +
             ' const ' + (await Util.lowerFirstLetter(tableName)).toString() + ' = await prismaClient.' + (await Util.lowerFirstLetter(tableName)).toString() + '.delete({\n' +
             ' where: {\n' +
@@ -301,59 +302,481 @@ export class DevService {
 
         for (let index = 0; index < columns.length; index++) {
             const element = columns[index];
-            servicex = servicex + ' // check if '+element.name+' exists\n' +
-                'if(searchRequest.' + element.name + '){\n'+
-            'filters.push({\n'+
-            '   ' + element.name + ': {\n'+
-            '      contains: searchRequest.' + element.name + '\n'+
-            ' }\n'+
-            '})\n'+
-            '}\n'
+            servicex = servicex + ' // check if ' + element.name + ' exists\n' +
+                'if(searchRequest.' + element.name + '){\n' +
+                'filters.push({\n' +
+                '   ' + element.name + ': {\n' +
+                '      contains: searchRequest.' + element.name + '\n' +
+                ' }\n' +
+                '})\n' +
+                '}\n'
 
         }
-servicex = servicex +'const '+(await Util.lowerFirstLetter(tableName)).toString() +'s = await prismaClient.'+(await Util.lowerFirstLetter(tableName)).toString() +'.findMany({\n'+
-            'where: {\n'+
-             '  // username: user.username,\n'+
-              '  AND: filters\n'+
-            '},\n'+
-            'take: searchRequest.size,\n'+
-            'skip: skip\n'+
-        '});\n'+
+        servicex = servicex + 'const ' + (await Util.lowerFirstLetter(tableName)).toString() + 's = await prismaClient.' + (await Util.lowerFirstLetter(tableName)).toString() + '.findMany({\n' +
+            'where: {\n' +
+            '  // username: user.username,\n' +
+            '  AND: filters\n' +
+            '},\n' +
+            'take: searchRequest.size,\n' +
+            'skip: skip\n' +
+            '});\n' +
 
-        'const total = await prismaClient.'+(await Util.lowerFirstLetter(tableName)).toString() +'.count({\n'+
-        '    where: {\n'+
-        '        //username: user.username,\n'+
-        '        AND: filters\n'+
-        '    },\n'+
-        '})\n'+
+            'const total = await prismaClient.' + (await Util.lowerFirstLetter(tableName)).toString() + '.count({\n' +
+            '    where: {\n' +
+            '        //username: user.username,\n' +
+            '        AND: filters\n' +
+            '    },\n' +
+            '})\n' +
 
-        'return {\n'+
-        '    data: '+(await Util.lowerFirstLetter(tableName)).toString() +'s.map('+(await Util.lowerFirstLetter(tableName)).toString() +
-                ' => to'+tableName+'Response('+(await Util.lowerFirstLetter(tableName)).toString() +')),\n'+
-        '    paging: {\n'+
-        '        current_page: searchRequest.page,\n'+
-        '        total_page: Math.ceil(total / searchRequest.size),\n'+
-        '        size: searchRequest.size\n'+
-        '    }\n'+
-        '}\n}\n'
-        /*
-        // check if email exists
-                if(searchRequest.email){
-                    filters.push({
-                        email: {
-                            contains: searchRequest.email
-                        }
-                    })
-                }
-        */
+            'return {\n' +
+            '    data: ' + (await Util.lowerFirstLetter(tableName)).toString() + 's.map(' + (await Util.lowerFirstLetter(tableName)).toString() +
+            ' => to' + tableName + 'Response(' + (await Util.lowerFirstLetter(tableName)).toString() + ')),\n' +
+            '    paging: {\n' +
+            '        current_page: searchRequest.page,\n' +
+            '        total_page: Math.ceil(total / searchRequest.size),\n' +
+            '        size: searchRequest.size\n' +
+            '    }\n' +
+            '}\n}\n'
         servicex = servicex + '\n}'
-        console.log(servicex)
+        // console.log(servicex)
         return servicex
+    }
+    //Controller
+    static async createController(tabelId: number): Promise<String> {
+        const table = await this.getTable(tabelId)
+        const tableName = (await Util.capitalizeFirstLetter(table.name))
+        const tableNameLow = (await Util.lowerFirstLetter(tableName)).toString()
+        const columns = await this.getColoumn(tabelId)
+        let controller = '\n//Create Controller\n'
+
+        controller = controller + ' import { Response,NextFunction } from "express";\n' +
+            'import { UserRequest } from "../type/user-request";\n' +
+            'import { Create' + tableName + 'Request,Search' + tableName + 'Request,Update' + tableName + 'Request } from "../model/' + tableNameLow + '-model";\n' +
+            'import { ' + tableName + 'Service } from "../service/' + tableNameLow + '-service";\n' +
+            'import { number } from "zod";\n' +
+            'export class ' + tableName + 'Controller{\n' +
+            ' static async create(req:UserRequest,res:Response, next:NextFunction){\n' +
+            '        try {\n' +
+            '            const request : Create' + tableName + 'Request = req.body as Create' + tableName + 'Request;\n' +
+            '            const response = await ' + tableName + 'Service.create(req.user!, request)\n' +
+            '           res.status(200).json({\n' +
+            '               data: response\n' +
+            '           })\n' +
+            '       } catch (error) {\n' +
+            '           next(error)\n' +
+            '       }\n' +
+            '   }\n'
+        //GET
+        controller = controller + ' static async get(req:UserRequest/*sudah login*/,res:Response, next:NextFunction){\n' +
+            'try {\n' +
+            '    const ' + tableNameLow + 'Id = Number(req.params.' + tableNameLow + 'Id)\n' +
+            '    const response = await ' + tableName + 'Service.get(req.user!, ' + tableNameLow + 'Id)\n' +
+            '   res.status(200).json({\n' +
+            '       data: response\n' +
+            '   })\n' +
+            '} catch (error) {\n' +
+            '    next(error)\n' +
+            '}\n' +
+            '}\n'
+        //UPDATE
+        controller = controller + 'static async update(req:UserRequest/*sudah login*/,res:Response, next:NextFunction){\n' +
+            ' try {\n' +
+            '    const request : Update' + tableName + 'Request = req.body as Update' + tableName + 'Request;\n' +
+            '    request.id = Number(req.params.' + tableNameLow + 'Id)\n' +
+            '    const response = await ' + tableName + 'Service.update(req.user!, request)\n' +
+            '    res.status(200).json({\n' +
+            '        data: response\n' +
+            '    })\n' +
+            '} catch (error) {\n' +
+            '    next(error)\n' +
+            '}\n' +
+            '}\n'
+
+        //REMOVE
+        controller = controller + ' static async remove(req:UserRequest/*sudah login*/,res:Response, next:NextFunction){\n' +
+            'try {\n' +
+            '    const ' + tableNameLow + 'Id = Number(req.params.' + tableNameLow + 'Id)\n' +
+            '    const response = await ' + tableName + 'Service.remove(req.user!, ' + tableNameLow + 'Id)\n' +
+            '    res.status(200).json({\n' +
+            '       data: "OK"\n' +
+            '   })\n' +
+            '} catch (error) {\n' +
+            '    next(error)\n' +
+            ' }\n' +
+            '}\n'
+
+        //SEARCH
+        controller = controller + 'static async search(req: UserRequest, res: Response, next: NextFunction) {\n' +
+            'try {\n' +
+            '    const request: Search' + tableName + 'Request = {\n'
+        for (let index = 0; index < columns.length; index++) {
+            const element = columns[index];
+            if (element.type == 'Varchar') {
+                controller = controller + element.name + ': req.query.' + element.name + ' as string,\n'
+            }
+            if (element.type == 'Number') {
+                controller = controller + element.name + ': req.query.' + element.name + ' as number,\n'
+            }
+        }
+
+        controller = controller + '       page: req.query.page ? Number(req.query.page) : 1,\n' +
+            '      size: req.query.size ? Number(req.query.size) : 10,\n' +
+            '  }\n' +
+            '  const response = await ' + tableName + 'Service.search(req.user!, request);\n' +
+            '  res.status(200).json(response);\n' +
+            '} catch (e) {\n' +
+            '    next(e);\n' +
+            '}\n' +
+            '} \n'
+
+        controller = controller + '}'
+        // console.log(controller)
+        return controller
     }
 
 
+    //ROUTE
+    static async createRoute(tabelId: number): Promise<String> {
+        const table = await this.getTable(tabelId)
+        const tableName = (await Util.capitalizeFirstLetter(table.name))
+        const tableNameLow = (await Util.lowerFirstLetter(tableName)).toString()
+
+        let route = 'import {' + tableName + 'Controller } from "../controller/' + tableNameLow + '-controller";\n\n\n//ROUTE ' + tableName + '\n' +
+            'apiRouter.post("/api/' + tableNameLow + 's",' + tableName + 'Controller.create)\n' +
+            'apiRouter.get("/api/' + tableNameLow + 's/:' + tableNameLow + 'Id",' + tableName + 'Controller.get)\n' +
+            'apiRouter.put("/api/' + tableNameLow + 's/:' + tableNameLow + 'Id",' + tableName + 'Controller.update)\n' +
+            'apiRouter.delete("/api/' + tableNameLow + 's/:' + tableNameLow + 'Id", ' + tableName + 'Controller.remove)\n' +
+            'apiRouter.get("/api/' + tableNameLow + 's", ' + tableName + 'Controller.search)\n'
+
+        console.log(route)
+        return route
+    }
 
 
+    //UNIT TEST
+    static async createTest(tabelId: number): Promise<String> {
+        const table = await this.getTable(tabelId)
+        const tableName = (await Util.capitalizeFirstLetter(table.name))
+        const tableNameLow = (await Util.lowerFirstLetter(tableName)).toString()
+        const columns = await this.getColoumn(tabelId)
+
+        let test = '//Test ' + tableName + '\n'
+        test = test + ' import supertest from "supertest"\n' +
+            ' import { web } from "../application/web"\n' +
+            ' import { ' + tableName + 'Test, UserTest } from "../../test/test-util"\n' +
+            ' import { logger } from "../../src/application/logging"\n'
+        //create test
+        test = test + '//Create test\n' +
+            ' describe("POST /api/' + tableNameLow + 's", () => {\n' +
+            ' \n'
+        let pratest = '  beforeEach(async () => {\n' +
+            ' await UserTest.create()\n' +
+            ' await ' + tableName + 'Test.create()\n' +
+            ' }) \n'
+        pratest = pratest + '  afterEach(async () => {\n' +
+            ' await ' + tableName + 'Test.deleteAll() //buatkan di util-test dulu\n' +
+            ' await UserTest.delete()\n' +
+            ' })\n'
+        test = test + pratest
+
+        test = test + ' it("should create new ' + tableNameLow + '", async () => {\n' +
+            ' const response = await supertest(web)\n' +
+            '     .post("/api/' + tableNameLow + 's")\n' +
+            '     .set("X-API-TOKEN", "test")\n' +
+            '     .send({\n'
+        for (let index = 0; index < columns.length; index++) {
+            const element = columns[index];
+            if (element.type == 'Varchar') {
+                if (element.name == 'username') {
+                    test = test + element.name + ':"test' + '",\n'
+                } else {
+                    test = test + element.name + ':"Test_' + element.name + '",\n'
+                }
+            }
+            if (element.type == 'Number') {
+                test = test + element.name + ':1\n'
+            }
+        }
+        test = test + '     })\n'
+
+        test = test + ' logger.debug(response.body)\n' +
+            ' expect(response.status).toBe(200);\n' +
+            ' expect(response.body.data.id).toBeDefined()\n'
+        for (let index = 0; index < columns.length; index++) {
+            const element = columns[index];
+            if (element.type == 'Varchar') {
+                if (element.name == 'username') {
+                    test = test + 'expect(response.body.data.' + element.name + ').toBe("test' + '")\n'
+                } else {
+                    test = test + 'expect(response.body.data.' + element.name + ').toBe("Test_' + element.name + '")\n'
+                }
+            }
+            if (element.type == 'Number') {
+                test = test + 'expect(response.body.data.' + element.name + ').toBe(1)\n'
+            }
+        }
+        test = test + '     })\n'
+
+        test = test + ' it("should reject create new ' + tableNameLow + '", async () => {\n' +
+            ' const response = await supertest(web)\n' +
+            '     .post("/api/' + tableNameLow + 's")\n' +
+            '     .set("X-API-TOKEN", "test")\n' +
+            '     .send({\n'
+        for (let index = 0; index < columns.length; index++) {
+            const element = columns[index];
+            if (element.type == 'Varchar') {
+                if (element.name == 'username') {
+                    test = test + element.name + ':"test' + '",\n'
+                } else {
+                    test = test + element.name + ':"' + '",\n'
+                }
+            }
+            if (element.type == 'Number') {
+                test = test + element.name + ':1\n'
+            }
+        }
+        test = test + '     })\n'
+
+        test = test + ' logger.debug(response.body)\n' +
+            ' expect(response.status).toBe(400);\n' +
+            ' expect(response.body.errors).toBeDefined()\n'
+        test = test + '})\n'
+        test = test + '})\n'
+
+        //GET test
+        test = test + '//GET test\n' +
+            ' describe("POST /api/' + tableNameLow + 's", () => {\n' +
+            ' \n'
+        test = test + pratest
+
+        test = test + ' it("should be able get ' + tableNameLow + '", async () => {\n' +
+            ' const ' + tableNameLow + ' = await ' + tableName + 'Test.get()\n' +
+            ' const response = await supertest(web) \n' +
+            '     .get(`/api/' + tableNameLow + 's/${' + tableNameLow + '.id}`)\n' +
+            '     .set("X-API-TOKEN", "test")\n' +
+            ' logger.debug(' + tableNameLow + '.id)\n' +
+            ' logger.debug(response.body)\n' +
+            'expect(response.status).toBe(200)\n' +
+            ' expect(response.body.data.id).toBeDefined()\n'
+        for (let index = 0; index < columns.length; index++) {
+            const element = columns[index];
+            if (element.type == 'Varchar' || element.type == 'Number') {
+                if (element.name == 'username') {
+                    test = test + 'expect(response.body.data.' + element.name + ').toBe("test' + '")\n'
+                } else {
+                    test = test + 'expect(response.body.data.' + element.name + ').toBe(' + tableNameLow + '.' + element.name + ')\n'
+                }
+            }
+        }
+        test = test + ' })\n'//end of it shout
+
+        test = test + ' it("should reject  get ' + tableNameLow + ' if ' + tableNameLow + ' is not found", async () => {\n' +
+            '  const ' + tableNameLow + ' = await ' + tableName + 'Test.get()\n' +
+            ' const response = await supertest(web)\n' +
+            '     .get(`/api/' + tableNameLow + 's/${' + tableNameLow + '.id}` + 1)\n' +
+            '     .set("X-API-TOKEN", "test")\n' +
+            ' logger.debug(' + tableNameLow + '.id)\n' +
+            ' logger.debug(response.body)\n' +
+            ' expect(response.status).toBe(404)\n' +
+            ' expect(response.body.errors).toBeDefined()\n' +
+            ' })\n'
+        test = test + '})\n'//end of describe
+
+        //PUT/UDATE TEST
+
+        test = test + '//PUT/UDATE TEST \n' +
+            ' describe("PUT /api/' + tableNameLow + 's/:' + tableNameLow + 'Id", () => {\n' +
+            ' \n'
+        test = test + pratest
+
+        test = test + ' it("should be able to update ' + tableNameLow + '", async () => {\n' +
+            ' const ' + tableNameLow + ' = await ' + tableName + 'Test.get()\n' +
+            ' const response = await supertest(web)\n' +
+            '     .put(`/api/' + tableNameLow + 's/${' + tableNameLow + '.id}`)\n' +
+            '    .set("X-API-TOKEN", "test")\n' +
+            '    .send({\n'
+        //  '        first_name: "eko",\n'
+
+        for (let index = 0; index < columns.length; index++) {
+            const element = columns[index];
+            if (element.type == 'Varchar') {
+                if (element.name == 'username') {
+                    test = test + element.name + ':"test' + '",\n'
+                } else {
+                    test = test + element.name + ':"test_edited' + '",\n'
+                }
+            }
+            if (element.type == 'Number') {
+                test = test + element.name + ':1\n'
+            }
+        }
+        test = test + '     })\n'
+        test = test + ' logger.debug(response.body)\n' +
+            'expect(response.status).toBe(200)\n' +
+            'expect(response.body.data.id).toBe(' + tableNameLow + '.id)\n'
+
+        for (let index = 0; index < columns.length; index++) {
+            const element = columns[index];
+            if (element.type == 'Varchar' || element.type == 'Number') {
+                if (element.name == 'username') {
+                    test = test + 'expect(response.body.data.' + element.name + ').toBe("test' + '")\n'
+                } else {
+                    test = test + 'expect(response.body.data.' + element.name + ').toBe("test_edited' + '")\n'
+                }
+            }
+        }
+        test = test + '})\n'//end of it
+
+
+
+
+        test = test + ' it("should be reject  to update   ' + tableNameLow + '", async () => {\n' +
+            ' const ' + tableNameLow + ' = await ' + tableName + 'Test.get()\n' +
+            ' const response = await supertest(web)\n' +
+            '     .put(`/api/' + tableNameLow + 's/${' + tableNameLow + '.id}`)\n' +
+            '    .set("X-API-TOKEN", "test")\n' +
+            '    .send({\n'
+        //  '        first_name: "eko",\n'
+
+        for (let index = 0; index < columns.length; index++) {
+            const element = columns[index];
+            if (element.type == 'Varchar') {
+                if (element.name == 'username') {
+                    test = test + element.name + ':"test' + '",\n'
+                } else {
+                    test = test + element.name + ':"' + '",\n'
+                }
+            }
+            if (element.type == 'Number') {
+                test = test + element.name + ':1\n'
+            }
+        }
+        test = test + '     })\n'
+        test = test + ' logger.debug(response.body)\n' +
+            'expect(response.status).toBe(400)\n' +
+            'expect(response.body.errors).toBeDefined\n'
+        test = test + '})\n'//end of it
+        test = test + '})\n'//end of describe
+
+
+
+
+
+        //REMOVE test
+
+        test = test + '//REMOVETEST \n' +
+            ' describe("DELETE /api/' + tableNameLow + 's/:' + tableNameLow + 'Id", () => {\n' +
+            ' \n'
+        test = test + pratest
+        test = test + ' it("should be able to remove ' + tableNameLow + '", async () => {\n' +
+            ' const ' + tableNameLow + ' = await ' + tableName + 'Test.get()\n' +
+            ' const response = await supertest(web)\n' +
+            '     .delete(`/api/' + tableNameLow + 's/${' + tableNameLow + '.id}`)\n' +
+            '    .set("X-API-TOKEN", "test")\n' +
+            ' logger.debug(response.body)\n' +
+            ' expect(response.status).toBe(200)\n' +
+            ' expect(response.body.data).toBe("OK")\n' +
+            ' })\n'
+
+
+        test = test + ' it("should reject  to remove ' + tableNameLow + ' if ' + tableNameLow + ' is not found", async () => {\n' +
+            ' const ' + tableNameLow + ' = await ' + tableName + 'Test.get()\n' +
+            '  const response = await supertest(web)\n' +
+            '   .delete(`/api/' + tableNameLow + 's/${' + tableNameLow + '.id + 1}`)\n' +
+            '   .set("X-API-TOKEN", "test")\n' +
+
+            ' logger.debug(response.body)\n' +
+            ' expect(response.status).toBe(404)\n' +
+            ' expect(response.body.errors).toBeDefined()\n' +
+            ' }) \n'+
+            ' }) '
+
+
+        //SEARCH test
+        test = test + '//SEARCH Test \n' +
+            'describe("SEARCH /api/' + tableNameLow + 's", () => {' +
+            ' \n'
+        test = test + pratest
+
+        test = test + '  it("should be able to search ' + tableNameLow + '", async () => {\n' +
+            '  const response = await supertest(web)\n' +
+            '      .get("/api/' + tableNameLow + 's")\n' +
+            '     .set("X-API-TOKEN", "test")\n' +
+            '  logger.debug(response.body)\n' +
+            '  expect(response.status).toBe(200)\n' +
+            '  expect(response.body.data.length).toBe(1)\n' +
+            '  expect(response.body.paging.current_page).toBe(1)\n' +
+            '  expect(response.body.paging.total_page).toBe(1)\n' +
+            '  expect(response.body.paging.size).toBe(10)\n' 
+            
+        test = test + '})\n'//end of it
+        test = test + '})\n'//end of describe
+        // console.log(test)
+        return test
+
+    }
+
+    //CREATE UTIL-TEST
+    static async createUtilTest(tabelId: number): Promise<String> {
+        const table = await this.getTable(tabelId)
+        const tableName = (await Util.capitalizeFirstLetter(table.name))
+        const tableNameLow = (await Util.lowerFirstLetter(tableName)).toString()
+        const columns = await this.getColoumn(tabelId)
+
+        let utiltest = '//tambahkan ke dalam file test-util.ts pada folder test \n//CREATE UTIL-TEST ' + tableName + '\n'
+        //util-test delete
+        utiltest = utiltest + 'export class ' + tableName + 'Test{\n'
+        utiltest = utiltest + '  static async deleteAll(){\n' +
+            'await prismaClient.' + tableNameLow + '.deleteMany({\n' +
+            '    where :{\n' +
+            '        username :"test"\n' +
+            '    }\n' +
+            '})\n' +
+            '} \n'
+
+        //util-test create 
+        utiltest = utiltest + '  static async create(){\n' +
+            'await prismaClient.' + tableNameLow + '.create({\n' +
+            '    data :{\n'
+        for (let index = 0; index < columns.length; index++) {
+            const element = columns[index];
+            if (element.type == 'Varchar') {
+                if (element.name == 'username') {
+                    utiltest = utiltest + element.name + ':"test' + '",\n'
+                } else {
+                    utiltest = utiltest + element.name + ':"test' + '",\n'
+                }
+            }
+            if (element.type == 'Number') {
+                utiltest = utiltest + element.name + ':1\n'
+            }
+        }
+        utiltest = utiltest + '    }\n' +
+            '})\n' +
+            '} \n'
+
+        //util-test get
+        utiltest = utiltest + ' static async get(): Promise<' + tableName + '> {\n' +
+            ' const ' + tableNameLow + ' = await prismaClient.' + tableNameLow + '.findFirst({\n' +
+            '    where: {\n' +
+            '       username: "test"\n' +
+            '    }\n' +
+            '  })\n' +
+
+            ' if (!' + tableNameLow + ') {\n' +
+            '     throw new Error("' + tableName + ' is not found")\n' +
+            '  }\n' +
+            ' return ' + tableNameLow + '\n' +
+            ' }\n'
+
+        utiltest = utiltest + '}\n'
+        utiltest = utiltest + '}\n'
+
+        utiltest = utiltest + '//tambahkan ' + tableName + ' pada import { User, Contact, Tablecoba } from "@prisma/client";'
+
+        console.log(utiltest)
+        return utiltest
+    }
 
     //create filenya
     static async createFiles(tabelId: number): Promise<String> {
@@ -369,16 +792,21 @@ servicex = servicex +'const '+(await Util.lowerFirstLetter(tableName)).toString(
         file = folder + 'src/coba/' + tableName + '-validation.ts\n\n'
         Util.createFile(file, (await this.createValidation(tabelId)).toString())
 
-        // file = folder+'src/coba/'+ tableName+'-service.ts\n'
-        // Util.createFile(file,(await this.crea(tabelId)).toString())
         file = folder + 'src/coba/' + tableName + '-service.ts\n\n'
         Util.createFile(file, (await this.createService(tabelId)).toString())
 
+        file = folder + 'src/coba/' + tableName + '-controller.ts\n\n'
+        Util.createFile(file, (await this.createController(tabelId)).toString())
+
+        file = folder + 'src/coba/' + tableName + '.test.ts\n\n'
+        Util.createFile(file, (await this.createTest(tabelId)).toString())
 
         folder = 'rm /Users/macbook/Mugi_data/workspace/typescript/belajar-typescript-restful-api/'
         file = file + folder + 'src/coba/' + tableName + '-model.ts\n'
         file = file + folder + 'src/coba/' + tableName + '-validation.ts\n'
         file = file + folder + 'src/coba/' + tableName + '-service.ts\n'
+        file = file + folder + 'src/coba/' + tableName + '-controller.ts\n'
+        file = file + folder + 'src/coba/' + tableName + '.test.ts\n'
 
 
         console.log(file)

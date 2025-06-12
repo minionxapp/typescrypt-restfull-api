@@ -58,7 +58,8 @@ describe('GET /api/contacts/:contactId', () => {
         await ContactTest.deleteAll()
         await UserTest.delete()
     })
-
+    
+   
     it('should be able get contact', async () => {
         const contact = await ContactTest.get()
         const response = await supertest(web) 
@@ -114,25 +115,25 @@ describe('PUT /api/contacts/:contactId', () => {
         expect(response.body.data.email).toBe("mail@mailx.com")
         expect(response.body.data.phone).toBe("0811111111")
     });
-
     it('should reject  to update contact request is invalid', async () => {
         const contact = await ContactTest.get()
         const response = await supertest(web)
-            .put(`/api/contacts/${contact.id}`)
-            .set("X-API-TOKEN", "test")
-            .send({
-                first_name: '',
-                last_name: "",
-                email: "mail",
-                phone: "081111111111112121323232323223"
-            })
+        .put(`/api/contacts/${contact.id}`)
+        .set("X-API-TOKEN", "test")
+        .send({
+            first_name: '',
+            last_name: "",
+            email: "mail",
+            phone: "081111111111112121323232323223"
+        })
         logger.debug(response.body)
         expect(response.status).toBe(400)
         expect(response.body.errors).toBeDefined
-
+        
     });
 })
 
+//samoai sini kode generatornya...............
 describe('DELETE /api/contacts/:contactId', () => {
     beforeEach(async () => {
         await UserTest.create()
