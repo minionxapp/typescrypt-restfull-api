@@ -22,16 +22,6 @@ apiRouter.delete("/api/contacts/:contactId", ContactController.remove)
 apiRouter.get("/api/contacts", ContactController.search)
 
 
-//ROUTE Tablecoba
-apiRouter.post("/api/tablecobas", TablecobaController.create)
-apiRouter.get("/api/tablecobas/:tablecobaId", TablecobaController.get)
-apiRouter.put("/api/tablecobas/:tablecobaId", TablecobaController.update)
-apiRouter.delete("/api/tablecobas/:tablecobaId", TablecobaController.remove)
-apiRouter.get("/api/tablecobas", TablecobaController.search)
-
-
-
-
 //ROUTE Project
 apiRouter.post("/api/projects",ProjectController.create)
 apiRouter.get("/api/projects/:projectId",ProjectController.get)
@@ -40,5 +30,11 @@ apiRouter.delete("/api/projects/:projectId", ProjectController.remove)
 apiRouter.get("/api/projects", ProjectController.search)
 
 
+//ROUTE Tablecoba
+// apiRouter.post("/api/tablecobas", TablecobaController.create)
+// apiRouter.get("/api/tablecobas/:tablecobaId", TablecobaController.get)
+// apiRouter.put("/api/tablecobas/:tablecobaId", TablecobaController.update)
+// apiRouter.delete("/api/tablecobas/:tablecobaId", TablecobaController.remove)
+// apiRouter.get("/api/tablecobas", TablecobaController.search)
 
 

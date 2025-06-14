@@ -129,7 +129,7 @@ export class DevService {
                 }
             }
             if (element.type == 'Number') {
-                model = model + element.name + ": number" + ",\n"
+                // model = model + element.name + ": number" + ",\n"
             }
         }
         model = model + "page : number," + "\n"
@@ -211,7 +211,7 @@ export class DevService {
             }
 
             if (element.type == 'Number') {
-                validatex = validatex + element.name + ': z.number().min(1).positive(),'
+                // validatex = validatex + element.name + ': z.number().min(1).positive(),\n'
             }
         }
         validatex = validatex + 'page : z.number().min(1).positive(),\n' +
@@ -242,7 +242,8 @@ export class DevService {
             'const createRequest = Validation.validate(' + tableName + 'Validation.CREATE, request)\n' +
             'const record = {\n' +
             '...createRequest,//dari object yang ada\n' +
-            '...{ username: user.name } //tambahkan username, dengan value dari object user\n' +
+            '...{ create_by: user.name }, //tambahkan username, dengan value dari object user\n' +
+            ' ...{ create_at: new Date()}}  //tambahkan username, dengan value dari object user' +
             '}\n' +
             'const ' + (await Util.lowerFirstLetter(tableName)).toString() + ' = await prismaClient.' + (await Util.lowerFirstLetter(tableName)).toString() + '.create({\n' +
             'data: record\n' +
@@ -258,7 +259,7 @@ export class DevService {
             '}\n' +
             '})\n' +
             'if (!' + (await Util.lowerFirstLetter(tableName)).toString() + ') {\n' +
-            'throw new ResponseError(404, "'+tableName+' not found")\n' +
+            'throw new ResponseError(404, "' + tableName + ' not found")\n' +
             '}\n' +
             'return ' + (await Util.lowerFirstLetter(tableName)).toString() + '\n' +
             '}\n\n'
@@ -268,10 +269,16 @@ export class DevService {
             'const ' + (await Util.lowerFirstLetter(tableName)).toString() + ' = await this.check' + tableName + 'Mustexist(id)\n' +
             'return to' + tableName + 'Response(' + (await Util.lowerFirstLetter(tableName)).toString() + ')\n' +
             '}\n\n'
-//SERVICE UPDATE
+
+        //SERVICE UPDATE
         servicex = servicex + '// UPDATE\n'
         servicex = servicex + ' static async update(user: User, request: Update' + tableName + 'Request): Promise<' + tableName + 'Response> {\n' +
             ' const updateRequest = Validation.validate(' + tableName + 'Validation.UPDATE, request)\n' +
+            ' const record = {\n' +
+            '...updateRequest,//dari object yang ada\n' +
+            '...{ create_by: user.name },\n' +
+            '...{ update_at: new Date()}  //tambahkan username, dengan value dari object user\n' +
+            '}\n' +
             ' //cek ' + tableName + ' ada atau tidak\n' +
             ' await this.check' + tableName + 'Mustexist(request.id)\n' +
             ' const ' + (await Util.lowerFirstLetter(tableName)).toString() + ' = await prismaClient.' + (await Util.lowerFirstLetter(tableName)).toString() + '.update({\n' +
@@ -306,14 +313,16 @@ export class DevService {
 
         for (let index = 0; index < columns.length; index++) {
             const element = columns[index];
-            servicex = servicex + ' // check if ' + element.name + ' exists\n' +
-                'if(searchRequest.' + element.name + '){\n' +
-                'filters.push({\n' +
-                '   ' + element.name + ': {\n' +
-                '      contains: searchRequest.' + element.name + '\n' +
-                ' }\n' +
-                '})\n' +
-                '}\n'
+            if (element.type == 'Varchar') {
+                servicex = servicex + ' // check if ' + element.name + ' exists\n' +
+                    'if(searchRequest.' + element.name + '){\n' +
+                    'filters.push({\n' +
+                    '   ' + element.name + ': {\n' +
+                    '      contains: searchRequest.' + element.name + '\n' +
+                    ' }\n' +
+                    '})\n' +
+                    '}\n'
+            }
 
         }
         servicex = servicex + 'const ' + (await Util.lowerFirstLetter(tableName)).toString() + 's = await prismaClient.' + (await Util.lowerFirstLetter(tableName)).toString() + '.findMany({\n' +
@@ -419,7 +428,7 @@ export class DevService {
                 controller = controller + element.name + ': req.query.' + element.name + ' as string,\n'
             }
             if (element.type == 'Number') {
-                controller = controller + element.name + ': req.query.' + element.name + ' as number,\n'
+                // controller = controller + element.name + ': req.query.' + element.name + ' as number,\n'
             }
         }
 
@@ -621,17 +630,17 @@ export class DevService {
 
         for (let index = 0; index < columns.length; index++) {
             const element = columns[index];
-            if (element.type == 'Varchar' ) {
+            if (element.type == 'Varchar') {
                 if (element.name == 'username') {
                     test = test + 'expect(response.body.data.' + element.name + ').toBe("test' + '")\n'
-                } 
+                }
                 else {
-                    test = test + 'expect(response.body.data.' + element.name + ').toBe("test_editedxxxxxxxx' + '")\n'
+                    test = test + 'expect(response.body.data.' + element.name + ').toBe("test_edited' + '")\n'
                 }
             }
-             if (element.type == 'Number' ) {
-                test = test + 'expect(response.body.data.' + element.name + ').toBe('+tableNameLow+'.'+element.name + ')\n'
-             }
+            if (element.type == 'Number') {
+                test = test + 'expect(response.body.data.' + element.name + ').toBe(' + tableNameLow + '.' + element.name + ')\n'
+            }
         }
         test = test + '})\n'//end of it
 

@@ -10,14 +10,12 @@ import { Validation } from "../validation/validation";
 import { User, Project } from "@prisma/client";
 export class ProjectService {
     static async create(user: User, request: CreateProjectRequest): Promise<ProjectResponse> {
-        
         const createRequest = Validation.validate(ProjectValidation.CREATE, request)
         const record = {
             ...createRequest,//dari object yang ada
-            ...{ create_by: user.name },
-            ...{ create_at: new Date()}  //tambahkan username, dengan value dari object user
-        }
-        console.log(record)
+            ...{ create_by: user.name }, //tambahkan username, dengan value dari object user
+            ...{ create_at: new Date() }
+        }  //tambahkan username, dengan value dari object user}
         const project = await prismaClient.project.create({
             data: record
         })
@@ -47,13 +45,11 @@ export class ProjectService {
     // UPDATE
     static async update(user: User, request: UpdateProjectRequest): Promise<ProjectResponse> {
         const updateRequest = Validation.validate(ProjectValidation.UPDATE, request)
-
-const record = {
+        const record = {
             ...updateRequest,//dari object yang ada
             ...{ create_by: user.name },
-            ...{ update_at: new Date()}  //tambahkan username, dengan value dari object user
+            ...{ update_at: new Date() }  //tambahkan username, dengan value dari object user
         }
-
         //cek Project ada atau tidak
         await this.checkProjectMustexist(request.id)
         const project = await prismaClient.project.update({
@@ -61,7 +57,7 @@ const record = {
                 id: updateRequest.id,
                 //     username: user.username
             },
-            data: record//updateRequest
+            data: updateRequest
         })
         return toProjectResponse(project)
     }
@@ -82,14 +78,6 @@ const record = {
         const skip = (searchRequest.page - 1) * searchRequest.size;
         const filters = [];
         // check if name exists
-        // check if project_id exists
-        // if (searchRequest.project_id) {
-        //     filters.push({
-        //         project_id: {
-        //             contains: searchRequest.project_id
-        //         }
-        //     })
-        // }
         // check if name exists
         if (searchRequest.name) {
             filters.push({
@@ -108,7 +96,7 @@ const record = {
         }
         const projects = await prismaClient.project.findMany({
             where: {
-                // project_id: user.username,
+                // username: user.username,
                 AND: filters
             },
             take: searchRequest.size,

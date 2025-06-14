@@ -3,33 +3,32 @@
 import { Project } from '@prisma/client'
 export type ProjectResponse = {
     id: number,
-    project_id: number,
     name: string,
     desc: string,
+    project_id: number,
 }
 
 //CreateProjectRequest
 export type CreateProjectRequest = {
     id: number,
-    project_id: number,
     name: string,
     desc: string,
+    project_id: number,
 }
 
 //UpdateProjectRequest
 export type UpdateProjectRequest = {
     id: number,
-    project_id: number,
     name: string,
     desc: string,
+    project_id: number,
 }
 
 //SearchProjectRequest
 export type SearchProjectRequest = {
     //id: number,
-    // project_id?: number,
-    name?: string | null,
-    desc?: string | null,
+    name: string,
+    desc: string,
     page: number,
     size: number,
 }
@@ -38,9 +37,9 @@ export type SearchProjectRequest = {
 export function toProjectResponse(project: Project): ProjectResponse {
     return {
         id: project.id,
-        project_id: project.project_id,
         name: project.name,
         desc: project.desc,
+        project_id: project.project_id,
     }
 }
 

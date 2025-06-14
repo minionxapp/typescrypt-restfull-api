@@ -3,9 +3,9 @@
 
 model Project {
 id         Int    @id @default(autoincrement())
-project_id Int 
 name String @db.VarChar(100)
-desc String @db.VarChar(256)
+desc String @db.VarChar(100)
+project_id Int 
  create_by   String  @db.VarChar(20)
 update_by   String?  @db.VarChar(20)
 create_at   DateTime? 
@@ -42,9 +42,9 @@ await prismaClient.project.deleteMany({
   static async create(){
 await prismaClient.project.create({
     data :{
-project_id:1
 name:"test",
 desc:"test",
+project_id:1
     }
 })
 } 

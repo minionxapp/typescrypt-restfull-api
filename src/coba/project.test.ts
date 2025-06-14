@@ -1,8 +1,8 @@
 //Test Project
 import supertest from "supertest"
-import { web } from "../application/web"
+import { web } from "../../src/application/web"
 import { ProjectTest, UserTest } from "../../test/test-util"
-import { logger } from "../application/logging"
+import { logger } from "../../src/application/logging"
 //Create test
 describe("POST /api/projects", () => {
 
@@ -19,25 +19,25 @@ describe("POST /api/projects", () => {
             .post("/api/projects")
             .set("X-API-TOKEN", "test")
             .send({
-                project_id: 1,
-name: "Test_name",
+                name: "Test_name",
                 desc: "Test_desc",
+                project_id: 1,
             })
         logger.debug(response.body)
         expect(response.status).toBe(200);
         expect(response.body.data.id).toBeDefined()
-        expect(response.body.data.project_id).toBe(1)
         expect(response.body.data.name).toBe("Test_name")
         expect(response.body.data.desc).toBe("Test_desc")
+        expect(response.body.data.project_id).toBe(1)
     })
     it("should reject create new project", async () => {
         const response = await supertest(web)
             .post("/api/projects")
             .set("X-API-TOKEN", "test")
             .send({
-                project_id: 1,
-name: "",
+                name: "",
                 desc: "",
+                project_id: 1,
             })
         logger.debug(response.body)
         expect(response.status).toBe(400);
@@ -64,9 +64,9 @@ describe("POST /api/projects", () => {
         logger.debug(response.body)
         expect(response.status).toBe(200)
         expect(response.body.data.id).toBeDefined()
-        expect(response.body.data.project_id).toBe(project.project_id)
         expect(response.body.data.name).toBe(project.name)
         expect(response.body.data.desc).toBe(project.desc)
+        expect(response.body.data.project_id).toBe(project.project_id)
     })
     it("should reject  get project if project is not found", async () => {
         const project = await ProjectTest.get()
@@ -96,16 +96,16 @@ describe("PUT /api/projects/:projectId", () => {
             .put(`/api/projects/${project.id}`)
             .set("X-API-TOKEN", "test")
             .send({
-                project_id: 1,
-name: "test_edited",
+                name: "test_edited",
                 desc: "test_edited",
+                project_id: 1,
             })
         logger.debug(response.body)
         expect(response.status).toBe(200)
         expect(response.body.data.id).toBe(project.id)
-        expect(response.body.data.project_id).toBe(project.project_id)
         expect(response.body.data.name).toBe("test_edited")
         expect(response.body.data.desc).toBe("test_edited")
+        expect(response.body.data.project_id).toBe(project.project_id)
     })
     it("should be reject  to update   project", async () => {
         const project = await ProjectTest.get()
@@ -113,9 +113,9 @@ name: "test_edited",
             .put(`/api/projects/${project.id}`)
             .set("X-API-TOKEN", "test")
             .send({
-                project_id: 1,
-name: "",
+                name: "",
                 desc: "",
+                project_id: 1,
             })
         logger.debug(response.body)
         expect(response.status).toBe(400)
