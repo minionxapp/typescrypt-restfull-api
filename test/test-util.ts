@@ -1,6 +1,6 @@
 import { prismaClient } from "../src/application/database";
 import bcrypt from "bcrypt"
-import { User, Contact, Tablecoba } from "@prisma/client";
+import { User, Contact, Tablecoba, Project } from "@prisma/client";
 
 export class UserTest {
     //unutk menghapus user
@@ -112,4 +112,37 @@ export class TablecobaTest {
         return tablecoba
     }
 }
-//tambahkan Tablecoba pada import { User, Contact, Tablecoba } from "@prisma/client";
+//UTIL-TEST//tambahkan ke dalam file test-util.ts pada folder test 
+//CREATE UTIL-TEST Project
+export class ProjectTest{
+  static async deleteAll(){
+await prismaClient.project.deleteMany({
+    where :{
+        create_by :"test"
+    }
+})
+} 
+  static async create(){
+await prismaClient.project.create({
+    data :{
+project_id:1,
+name:"test",
+desc:"test",
+create_by:"test"
+    }
+})
+} 
+ static async get(): Promise<Project> {
+ const project = await prismaClient.project.findFirst({
+    where: {
+       create_by: "test"
+    }
+  })
+ if (!project) {
+     throw new Error("Project is not found")
+  }
+ return project
+ }
+}
+
+//tambahkan Project pada import { User, Contact, Tablecoba } from "@prisma/client";

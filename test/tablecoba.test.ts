@@ -1,8 +1,8 @@
 //Test Tablecoba
  import supertest from "supertest"
- import { web } from "../application/web"
- import { TablecobaTest, UserTest } from "../../test/test-util"
- import { logger } from "../../src/application/logging"
+ import { web } from "../src/application/web"
+ import { TablecobaTest, UserTest } from "../test/test-util"
+ import { logger } from "../src/application/logging"
 //Create test
  describe("POST /api/tablecobas", () => {
  

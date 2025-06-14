@@ -2,7 +2,9 @@ import express from "express"
 import { authMiddleware } from "../middleware/auth-middleware";
 import { UserController } from "../controller/user-controller";
 import { ContactController } from "../controller/contact-controller";
-import { TablecobaController } from "../coba/tablecoba-controller";
+import { TablecobaController } from "../controller/tablecoba-controller";
+import {ProjectController } from "../coba/project-controller";
+
 
 export const apiRouter = express.Router();
 apiRouter.use(authMiddleware);
@@ -18,7 +20,6 @@ apiRouter.get("/api/contacts/:contactId", ContactController.get)
 apiRouter.put("/api/contacts/:contactId", ContactController.update)
 apiRouter.delete("/api/contacts/:contactId", ContactController.remove)
 apiRouter.get("/api/contacts", ContactController.search)
-// apiRouter.delete("/api/contacts/:contactId(\\d+)", ContactController.remove);
 
 
 //ROUTE Tablecoba
@@ -27,6 +28,17 @@ apiRouter.get("/api/tablecobas/:tablecobaId", TablecobaController.get)
 apiRouter.put("/api/tablecobas/:tablecobaId", TablecobaController.update)
 apiRouter.delete("/api/tablecobas/:tablecobaId", TablecobaController.remove)
 apiRouter.get("/api/tablecobas", TablecobaController.search)
+
+
+
+
+//ROUTE Project
+apiRouter.post("/api/projects",ProjectController.create)
+apiRouter.get("/api/projects/:projectId",ProjectController.get)
+apiRouter.put("/api/projects/:projectId",ProjectController.update)
+apiRouter.delete("/api/projects/:projectId", ProjectController.remove)
+apiRouter.get("/api/projects", ProjectController.search)
+
 
 
 

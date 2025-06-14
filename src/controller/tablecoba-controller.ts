@@ -2,8 +2,8 @@
 //Create Controller
  import { Response,NextFunction } from "express";
 import { UserRequest } from "../type/user-request";
-import { CreateTablecobaRequest,SearchTablecobaRequest,UpdateTablecobaRequest } from "./tablecoba-model";
-import { TablecobaService } from "./tablecoba-service";
+import { CreateTablecobaRequest,SearchTablecobaRequest,UpdateTablecobaRequest } from "../model/tablecoba-model";
+import { TablecobaService } from "../service/tablecoba-service";
 import { number } from "zod";
 export class TablecobaController{
  static async create(req:UserRequest,res:Response, next:NextFunction){

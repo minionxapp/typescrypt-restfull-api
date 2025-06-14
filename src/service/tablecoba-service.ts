@@ -3,9 +3,9 @@
 //utuk coba--> disesuaikan dulu
 import { prismaClient } from "../application/database";
 import { ResponseError } from "../error/response-error";
-import { TablecobaResponse, CreateTablecobaRequest, SearchTablecobaRequest, toTablecobaResponse, UpdateTablecobaRequest } from "../coba/tablecoba-model";
+import { TablecobaResponse, CreateTablecobaRequest, SearchTablecobaRequest, toTablecobaResponse, UpdateTablecobaRequest } from "../model/tablecoba-model";
 import { Pageable } from "../model/page";
-import { TablecobaValidation } from "../coba/tablecoba-validation";
+import { TablecobaValidation } from "../validation/tablecoba-validation";
 import { Validation } from "../validation/validation";
 import { User, Tablecoba } from "@prisma/client";
 export class TablecobaService {

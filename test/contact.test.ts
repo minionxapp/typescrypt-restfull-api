@@ -168,7 +168,7 @@ describe('DELETE /api/contacts/:contactId', () => {
 
 })
 
-
+//samoai sini kode generatornya...............
 describe('SEARCH /api/contacts', () => {
     beforeEach(async () => {
         await UserTest.create()

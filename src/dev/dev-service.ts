@@ -47,6 +47,10 @@ export class DevService {
                 model = model + " Int \n"
             }
         }
+        model = model + ' create_by   String  @db.VarChar(20)\n' +
+            'update_by   String?  @db.VarChar(20)\n' +
+            'create_at   DateTime? \n' +
+            'update_at   DateTime? \n'
         model = model + '@@map("' + (tableName.toLocaleLowerCase()) + 's")\n'
         model = model + "}\n"
         // console.log(model)
@@ -201,9 +205,9 @@ export class DevService {
             if (element.type === 'Varchar') {
                 if (element.is_null === 'N')
                     //z.string().min(1).optional(),
-                    validatex = validatex + element.name + ': z.string().min(1).optional()' +',\n'
+                    validatex = validatex + element.name + ': z.string().min(1).optional()' + ',\n'
                 else
-                    validatex = validatex + element.name + ': z.string()'  + '.optional(),\n'
+                    validatex = validatex + element.name + ': z.string()' + '.optional(),\n'
             }
 
             if (element.type == 'Number') {
@@ -227,10 +231,10 @@ export class DevService {
         let servicex = '//Create Service \n\n//utuk coba--> disesuaikan dulu\n'
         servicex = servicex + 'import { prismaClient } from "../application/database";\n' +
             'import { ResponseError } from "../error/response-error";\n' +
-            'import { ' + tableName + 'Response, Create' + tableName + 'Request, Search' + tableName + 'Request, to' + tableName + 'Response, Update' + tableName + 'Request } from "../coba/' +
+            'import { ' + tableName + 'Response, Create' + tableName + 'Request, Search' + tableName + 'Request, to' + tableName + 'Response, Update' + tableName + 'Request } from "../model/' +
             (await Util.lowerFirstLetter(tableName)).toString() + '-model";\n' +
             'import { Pageable } from "../model/page";\n' +
-            'import { ' + tableName + 'Validation } from "../coba/' + (await Util.lowerFirstLetter(tableName)).toString() + '-validation";\n' +
+            'import { ' + tableName + 'Validation } from "../validation/' + (await Util.lowerFirstLetter(tableName)).toString() + '-validation";\n' +
             'import { Validation } from "../validation/validation";\n' +
             'import { User, ' + tableName + ' } from "@prisma/client";\n' +
             'export class ' + tableName + 'Service {\n' +
@@ -254,7 +258,7 @@ export class DevService {
             '}\n' +
             '})\n' +
             'if (!' + (await Util.lowerFirstLetter(tableName)).toString() + ') {\n' +
-            'throw new ResponseError(404, "Contact not found")\n' +
+            'throw new ResponseError(404, "'+tableName+' not found")\n' +
             '}\n' +
             'return ' + (await Util.lowerFirstLetter(tableName)).toString() + '\n' +
             '}\n\n'
@@ -264,7 +268,7 @@ export class DevService {
             'const ' + (await Util.lowerFirstLetter(tableName)).toString() + ' = await this.check' + tableName + 'Mustexist(id)\n' +
             'return to' + tableName + 'Response(' + (await Util.lowerFirstLetter(tableName)).toString() + ')\n' +
             '}\n\n'
-
+//SERVICE UPDATE
         servicex = servicex + '// UPDATE\n'
         servicex = servicex + ' static async update(user: User, request: Update' + tableName + 'Request): Promise<' + tableName + 'Response> {\n' +
             ' const updateRequest = Validation.validate(' + tableName + 'Validation.UPDATE, request)\n' +
@@ -441,7 +445,7 @@ export class DevService {
         const tableName = (await Util.capitalizeFirstLetter(table.name))
         const tableNameLow = (await Util.lowerFirstLetter(tableName)).toString()
 
-        let route = 'import {' + tableName + 'Controller } from "../controller/' + tableNameLow + '-controller";\n\n\n//ROUTE ' + tableName + '\n' +
+        let route = '\n\nimport {' + tableName + 'Controller } from "../controller/' + tableNameLow + '-controller";\n\n\n//ROUTE ' + tableName + '\n' +
             'apiRouter.post("/api/' + tableNameLow + 's",' + tableName + 'Controller.create)\n' +
             'apiRouter.get("/api/' + tableNameLow + 's/:' + tableNameLow + 'Id",' + tableName + 'Controller.get)\n' +
             'apiRouter.put("/api/' + tableNameLow + 's/:' + tableNameLow + 'Id",' + tableName + 'Controller.update)\n' +
@@ -462,9 +466,9 @@ export class DevService {
 
         let test = '//Test ' + tableName + '\n'
         test = test + ' import supertest from "supertest"\n' +
-            ' import { web } from "../application/web"\n' +
-            ' import { ' + tableName + 'Test, UserTest } from "../../test/test-util"\n' +
-            ' import { logger } from "../../src/application/logging"\n'
+            ' import { web } from "../src/application/web"\n' +
+            ' import { ' + tableName + 'Test, UserTest } from "../test/test-util"\n' +
+            ' import { logger } from "../src/application/logging"\n'
         //create test
         test = test + '//Create test\n' +
             ' describe("POST /api/' + tableNameLow + 's", () => {\n' +
@@ -494,7 +498,7 @@ export class DevService {
                 }
             }
             if (element.type == 'Number') {
-                test = test + element.name + ':1\n'
+                test = test + element.name + ':1,\n'
             }
         }
         test = test + '     })\n'
@@ -532,7 +536,7 @@ export class DevService {
                 }
             }
             if (element.type == 'Number') {
-                test = test + element.name + ':1\n'
+                test = test + element.name + ':1,\n'
             }
         }
         test = test + '     })\n'
@@ -607,7 +611,7 @@ export class DevService {
                 }
             }
             if (element.type == 'Number') {
-                test = test + element.name + ':1\n'
+                test = test + element.name + ':1,\n'
             }
         }
         test = test + '     })\n'
@@ -617,13 +621,17 @@ export class DevService {
 
         for (let index = 0; index < columns.length; index++) {
             const element = columns[index];
-            if (element.type == 'Varchar' || element.type == 'Number') {
+            if (element.type == 'Varchar' ) {
                 if (element.name == 'username') {
                     test = test + 'expect(response.body.data.' + element.name + ').toBe("test' + '")\n'
-                } else {
-                    test = test + 'expect(response.body.data.' + element.name + ').toBe("test_edited' + '")\n'
+                } 
+                else {
+                    test = test + 'expect(response.body.data.' + element.name + ').toBe("test_editedxxxxxxxx' + '")\n'
                 }
             }
+             if (element.type == 'Number' ) {
+                test = test + 'expect(response.body.data.' + element.name + ').toBe('+tableNameLow+'.'+element.name + ')\n'
+             }
         }
         test = test + '})\n'//end of it
 
@@ -648,7 +656,7 @@ export class DevService {
                 }
             }
             if (element.type == 'Number') {
-                test = test + element.name + ':1\n'
+                test = test + element.name + ':1,\n'
             }
         }
         test = test + '     })\n'
@@ -688,7 +696,7 @@ export class DevService {
             ' logger.debug(response.body)\n' +
             ' expect(response.status).toBe(404)\n' +
             ' expect(response.body.errors).toBeDefined()\n' +
-            ' }) \n'+
+            ' }) \n' +
             ' }) '
 
 
@@ -707,8 +715,8 @@ export class DevService {
             '  expect(response.body.data.length).toBe(1)\n' +
             '  expect(response.body.paging.current_page).toBe(1)\n' +
             '  expect(response.body.paging.total_page).toBe(1)\n' +
-            '  expect(response.body.paging.size).toBe(10)\n' 
-            
+            '  expect(response.body.paging.size).toBe(10)\n'
+
         test = test + '})\n'//end of it
         test = test + '})\n'//end of describe
         // console.log(test)
@@ -786,27 +794,48 @@ export class DevService {
 
         let folder = '/Users/macbook/Mugi_data/workspace/typescript/belajar-typescript-restful-api/'
         let file = ''
-        file = folder + 'src/coba/' + tableName + '-model.ts\n'
+        const folderModel = 'src/coba/'//'src/model/'
+        const folderValidation = 'src/coba/'//'src/validation/'
+        const folderController = 'src/coba/'//'src/controller/'
+        const folderService = 'src/coba/'//'src/service/'
+        const folderTest = 'src/coba/'//'test/'
+
+        file = folder + folderModel + tableName + '-model.ts\n'
         Util.createFile(file, (await this.createModel(tabelId)).toString())
 
-        file = folder + 'src/coba/' + tableName + '-validation.ts\n\n'
+        file = folder + folderValidation + tableName + '-validation.ts\n\n'
         Util.createFile(file, (await this.createValidation(tabelId)).toString())
 
-        file = folder + 'src/coba/' + tableName + '-service.ts\n\n'
+        file = folder + folderService + tableName + '-service.ts\n\n'
         Util.createFile(file, (await this.createService(tabelId)).toString())
 
-        file = folder + 'src/coba/' + tableName + '-controller.ts\n\n'
+        file = folder + folderController + tableName + '-controller.ts\n\n'
         Util.createFile(file, (await this.createController(tabelId)).toString())
 
-        file = folder + 'src/coba/' + tableName + '.test.ts\n\n'
+        file = folder + folderTest + tableName + '.test.ts\n\n'
         Util.createFile(file, (await this.createTest(tabelId)).toString())
 
+        // file = folder + 'src/coba/' + tableName + '-route.ts\n\n'
+        // Util.createFile(file, (await this.createRoute(tabelId)).toString())
+
+        file = folder + 'src/coba/' + tableName + '-utility.txt\n\n'
+        const utilText = (await this.createSchema(tabelId)).toString() + '\n\n\n//ROUTE' +
+            (await this.createRoute(tabelId)).toString() + '\n\n\n//UTIL-TEST' +
+            (await this.createUtilTest(tabelId)).toString()
+        Util.createFile(file, utilText)
+
+        // file = folder + 'src/coba/' + tableName + '-util-test.ts\n\n'
+        // Util.createFile(file, (await this.createUtilTest(tabelId)).toString())
+
         folder = 'rm /Users/macbook/Mugi_data/workspace/typescript/belajar-typescript-restful-api/'
-        file = file + folder + 'src/coba/' + tableName + '-model.ts\n'
-        file = file + folder + 'src/coba/' + tableName + '-validation.ts\n'
-        file = file + folder + 'src/coba/' + tableName + '-service.ts\n'
-        file = file + folder + 'src/coba/' + tableName + '-controller.ts\n'
-        file = file + folder + 'src/coba/' + tableName + '.test.ts\n'
+        file = file + folder + folderModel + tableName + '-model.ts\n'
+        file = file + folder + folderValidation + tableName + '-validation.ts\n'
+        file = file + folder + folderService + tableName + '-service.ts\n'
+        file = file + folder + folderController + tableName + '-controller.ts\n'
+        file = file + folder + folderTest + tableName + '.test.ts\n'
+        file = file + folder + 'src/coba/' + tableName + '-utilily.txt\n'
+        // file = file + folder + 'src/coba/' + tableName + '-route.ts\n'
+        // file = file + folder + 'src/coba/' + tableName + '-schema.ts\n'
 
 
         console.log(file)

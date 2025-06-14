@@ -28,7 +28,7 @@ export type ContactResponse = {
 export type CreateContactRequest = {
     first_name: string,
     last_name: string,
-    email?: string,
+    email?: string, 
     phone?: string
 
 }
