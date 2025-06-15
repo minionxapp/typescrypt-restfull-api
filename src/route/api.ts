@@ -4,7 +4,7 @@ import { UserController } from "../controller/user-controller";
 import { ContactController } from "../controller/contact-controller";
 import { TablecobaController } from "../controller/tablecoba-controller";
 import {ProjectController } from "../coba/project-controller";
-
+import {Dev_tablexController } from "../coba/dev_tablex-controller";
 
 export const apiRouter = express.Router();
 apiRouter.use(authMiddleware);
@@ -29,6 +29,15 @@ apiRouter.put("/api/projects/:projectId",ProjectController.update)
 apiRouter.delete("/api/projects/:projectId", ProjectController.remove)
 apiRouter.get("/api/projects", ProjectController.search)
 
+
+
+
+//ROUTE Dev_tablex
+apiRouter.post("/api/dev_tablexs",Dev_tablexController.create)
+apiRouter.get("/api/dev_tablexs/:dev_tablexId",Dev_tablexController.get)
+apiRouter.put("/api/dev_tablexs/:dev_tablexId",Dev_tablexController.update)
+apiRouter.delete("/api/dev_tablexs/:dev_tablexId", Dev_tablexController.remove)
+apiRouter.get("/api/dev_tablexs", Dev_tablexController.search)
 
 //ROUTE Tablecoba
 // apiRouter.post("/api/tablecobas", TablecobaController.create)

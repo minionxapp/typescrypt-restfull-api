@@ -8,7 +8,7 @@ describe('Get /api/dev/schema/1', () => {
 
 it('should dev', async () => {
 const response = await supertest(web)
-            .get("/api/dev/schema/2")
+            .get("/api/dev/schema/3")
             // .set("X-API-TOKEN", "test")
             // .send({
             //     password: "",

@@ -2,6 +2,14 @@ import { prismaClient } from "../application/database";
 
 import { Request, Response, NextFunction } from "express";
 import { DevService } from "./dev-service";
+import { DevCreateSchema } from "./dev-create-schema";
+import { DevCreateModel } from "./dev-create-model";
+import { DevCreateValidation } from "./dev-create-validation";
+import { DevCreateService } from "./dev-create-service";
+import { DevCreateController } from "./dev-create-controller";
+import { DevCreateRoute } from "./dev-create-route";
+import { DevCreateTest } from "./dev-create-test";
+import { DevCreateUtilTest } from "./dev-create-util-test";
 export class DevController {
 
     static async get(req: Request, res: Response, next: NextFunction) {
@@ -9,15 +17,15 @@ export class DevController {
             const tabelId = Number(req.params.tableId)
             res.status(200).json({
                 data: {
-                    schema : await DevService.createSchema(tabelId),
-                    model : await DevService.createModel(tabelId),
-                    validate : await DevService.createValidation(tabelId),
-                    service: await DevService.createService(tabelId),
-                    controller: await DevService.createController(tabelId),
-                    route: await DevService.createRoute(tabelId),
-                    test: await DevService.createTest(tabelId),
-                    utiltest: await DevService.createUtilTest(tabelId),
-                    file : await DevService.createFiles(tabelId)
+                    schema : await DevCreateSchema.createSchema(tabelId),
+                    model : await DevCreateModel.createModel(tabelId),
+                    validate : await DevCreateValidation.createValidation(tabelId),
+                    service: await DevCreateService.createService(tabelId),
+                    controller: await DevCreateController.createController(tabelId),
+                    route: await DevCreateRoute.createRoute(tabelId),
+                    test: await DevCreateTest.createTest(tabelId),
+                    utiltest: await DevCreateUtilTest.createUtilTest(tabelId),
+                    // file : await DevService.createFiles(tabelId)
                 }
 
             })

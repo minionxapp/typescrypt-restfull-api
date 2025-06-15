@@ -37,3 +37,7 @@ urutan
 7. route
 8. unit test 
     - test util --> bila dibutuhkan mis nya pembuatan data dummy
+
+
+perbaiki unutk kolom yang tidak boleh nulll
+--model,--validation,--schema
