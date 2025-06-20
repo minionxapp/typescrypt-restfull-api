@@ -22,4 +22,39 @@ export class Util {
       return 'Ok'
    }
    
+static async camelCase(str: string): Promise<string> {
+   return str.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
+}
+
+static async snackCase(str: string): Promise<string> {
+   return str.toLowerCase().replace(/_([a-z])/g, (g) => g[1].toUpperCase());
+}
+
+static async fileNameFormat(inputString: string): Promise<string>  {
+  return inputString
+    .split("")
+    .map((character, index) => {
+      if(character === '_'){
+          return '-';
+      }else{
+         if (character === character.toUpperCase()) {
+           return (index !== 0 ? "-" : "") + character.toLowerCase();
+         } else {
+           return character;
+         }
+
+      }
+    })
+    .join("");
+}
+   /**
+    * function camelCase(str: string): string {
+     return str.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
+   }
+    * 
+   function snakeToCamel(str: string): string {
+  return str.toLowerCase().replace(/_([a-z])/g, (g) => g[1].toUpperCase());
+}
+
+    */
 }

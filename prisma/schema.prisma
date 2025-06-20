@@ -17,10 +17,22 @@ datasource db {
 }
 
 //for development
-model DevProject {
-  id   Int    @id @default(autoincrement())
-  name String @db.VarChar(100)
-  desc String @db.VarChar(255)
+// model DevProject {
+//   id   Int    @id @default(autoincrement())
+//   name String @db.VarChar(100)
+//   desc String @db.VarChar(255)
+
+//   @@map("dev_projects")
+// }
+
+model Dev_project {
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(100)
+  desc      String    @db.VarChar(100)
+  create_by String    @db.VarChar(20)
+  update_by String?   @db.VarChar(20)
+  create_at DateTime?
+  update_at DateTime?
 
   @@map("dev_projects")
 }
@@ -39,10 +51,14 @@ model Tablecoba {
 }
 
 model DevTable {
-  id         Int    @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   project_id Int
-  name       String @db.VarChar(100)
-  desc       String @db.VarChar(255)
+  name       String    @db.VarChar(100)
+  desc       String    @db.VarChar(255)
+  create_by  String    @default("admin") @db.VarChar(20)
+  update_by  String?   @db.VarChar(20)
+  create_at  DateTime?
+  update_at  DateTime?
 
   @@map("dev_tables")
 }
@@ -113,13 +129,14 @@ model Project {
 }
 
 model Dev_tablex {
-  id        Int       @id @default(autoincrement())
-  name      String   @db.VarChar(100) ///tolong di cek dulu pada kolom is_nulll yaa..... perbaiki
-  desc      String   @db.VarChar(100)
-  create_by String    @db.VarChar(20)
-  update_by String?   @db.VarChar(20)
-  create_at DateTime?
-  update_at DateTime?
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(100) ///tolong di cek dulu pada kolom is_nulll yaa..... perbaiki
+  desc       String    @db.VarChar(100)
+  create_by  String    @db.VarChar(20)
+  update_by  String?   @db.VarChar(20)
+  create_at  DateTime?
+  update_at  DateTime?
+  project_id Int
 
   @@map("dev_tablexs")
 }

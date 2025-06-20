@@ -1,0 +1,31 @@
+//CreateModel
+//Tablecoba-model.ts
+import { Tablecoba } from '@prisma/client'
+export type TablecobaResponse = {
+id: number,
+}
+
+//CreateTablecobaRequest
+export type CreateTablecobaRequest = {
+id: number,
+}
+
+//UpdateTablecobaRequest
+export type UpdateTablecobaRequest = {
+id: number,
+}
+
+//SearchTablecobaRequest
+export type SearchTablecobaRequest = {
+//id: number,
+page : number,
+size : number,
+}
+
+//toTablecobaResponse
+export function toTablecobaResponse(tablecoba: Tablecoba): TablecobaResponse {
+return { 
+id: tablecoba.id,
+}
+}
+

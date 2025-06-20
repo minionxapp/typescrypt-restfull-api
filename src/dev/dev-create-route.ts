@@ -8,8 +8,8 @@ static async createRoute(tabelId: number): Promise<String> {
         const table = await DevUtil.getTable(tabelId)
         const tableName = (await Util.capitalizeFirstLetter(table.name))
         const tableNameLow = (await Util.lowerFirstLetter(tableName)).toString()
-
-        let route = '\n\nimport {' + tableName + 'Controller } from "../controller/' + tableNameLow + '-controller";\n\n\n//ROUTE ' + tableName + '\n' +
+const fileName = await Util.fileNameFormat(tableName)
+        let route = '\n\nimport {' + tableName + 'Controller } from "../controller/' + fileName + '-controller";\n\n\n//ROUTE ' + tableName + '\n' +
             'apiRouter.post("/api/' + tableNameLow + 's",' + tableName + 'Controller.create)\n' +
             'apiRouter.get("/api/' + tableNameLow + 's/:' + tableNameLow + 'Id",' + tableName + 'Controller.get)\n' +
             'apiRouter.put("/api/' + tableNameLow + 's/:' + tableNameLow + 'Id",' + tableName + 'Controller.update)\n' +

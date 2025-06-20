@@ -1,0 +1,11 @@
+//Screate Schema
+ //schema.prisma
+
+model Tablecoba {
+id         Int    @id @default(autoincrement())
+ create_by   String  @db.VarChar(20)
+update_by   String?  @db.VarChar(20)
+create_at   DateTime? 
+update_at   DateTime? 
+@@map("tablecobas")
+}

@@ -1,0 +1,30 @@
+//tambahkan ke dalam file test-util.ts pada folder test 
+//CREATE UTIL-TEST Tablecoba
+export class TablecobaTest{
+  static async deleteAll(){
+await prismaClient.tablecoba.deleteMany({
+    where :{
+        create_by :"test"
+    }
+})
+} 
+  static async create(){
+await prismaClient.tablecoba.create({
+    data :{
+        create_by :"test"
+    }
+})
+}
+ static async get(): Promise<Tablecoba> {
+ const tablecoba = await prismaClient.tablecoba.findFirst({
+    where: {
+       create_by: "test"
+    }
+  })
+ if (!tablecoba) {
+     throw new Error("Tablecoba is not found")
+  }
+ return tablecoba
+ }
+}
+//tambahkan Tablecoba pada import { User, Contact, Tablecoba } from "@prisma/client";

@@ -11,7 +11,6 @@ static async createSchema(tabelId: number): Promise<String> {
         const table = await DevUtil.getTable(tabelId)
         const tableName = (await Util.capitalizeFirstLetter(table.name))
         const columns = await DevUtil.getColoumn(tabelId)
-        // console.log(columns)
         let model = "//Screate Schema\n //schema.prisma\n\n"
         model = model + 'model ' + (await Util.capitalizeFirstLetter(tableName)).toString() + ' {\n'
         model = model + 'id         Int    @id @default(autoincrement())\n'

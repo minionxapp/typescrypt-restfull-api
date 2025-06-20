@@ -12,3 +12,7 @@ exports.publicRouter.post("/api/users", user_controller_1.UserController.registe
 exports.publicRouter.post("/api/users/login", user_controller_1.UserController.login);
 //dev
 exports.publicRouter.get("/api/dev/schema/:tableId", dev_controller_1.DevController.get);
+// import {Dev_tablexController } from "../controller/dev-tablex-controller";
+// publicRouter.get("/api/dev_tablexs/:dev_tablexId",Dev_tablexController.get)
+// import {Dev_projectController } from "../controller/dev-project-controller";
+// publicRouter.get("/api/dev_projects", Dev_projectController.search)

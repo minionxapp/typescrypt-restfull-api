@@ -9,14 +9,14 @@ export class DevCreateService {
         const table = await DevUtil.getTable(tabelId)
         const tableName = (await Util.capitalizeFirstLetter(table.name))
         const columns = await DevUtil.getColoumn(tabelId)
-
+ const fileName = await Util.fileNameFormat(tableName)
         let servicex = '//Create Service \n\n//utuk coba--> disesuaikan dulu\n'
         servicex = servicex + 'import { prismaClient } from "../application/database";\n' +
             'import { ResponseError } from "../error/response-error";\n' +
             'import { ' + tableName + 'Response, Create' + tableName + 'Request, Search' + tableName + 'Request, to' + tableName + 'Response, Update' + tableName + 'Request } from "../model/' +
-            (await Util.lowerFirstLetter(tableName)).toString() + '-model";\n' +
+            fileName + '-model";\n' +
             'import { Pageable } from "../model/page";\n' +
-            'import { ' + tableName + 'Validation } from "../validation/' + (await Util.lowerFirstLetter(tableName)).toString() + '-validation";\n' +
+            'import { ' + tableName + 'Validation } from "../validation/' +fileName+ '-validation";\n' +
             'import { Validation } from "../validation/validation";\n' +
             'import { User, ' + tableName + ' } from "@prisma/client";\n' +
             'export class ' + tableName + 'Service {\n' +

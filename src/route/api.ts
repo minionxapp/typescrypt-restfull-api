@@ -2,9 +2,8 @@ import express from "express"
 import { authMiddleware } from "../middleware/auth-middleware";
 import { UserController } from "../controller/user-controller";
 import { ContactController } from "../controller/contact-controller";
-import { TablecobaController } from "../controller/tablecoba-controller";
-import {ProjectController } from "../coba/project-controller";
-import {Dev_tablexController } from "../coba/dev_tablex-controller";
+
+
 
 export const apiRouter = express.Router();
 apiRouter.use(authMiddleware);
@@ -22,28 +21,28 @@ apiRouter.delete("/api/contacts/:contactId", ContactController.remove)
 apiRouter.get("/api/contacts", ContactController.search)
 
 
-//ROUTE Project
-apiRouter.post("/api/projects",ProjectController.create)
-apiRouter.get("/api/projects/:projectId",ProjectController.get)
-apiRouter.put("/api/projects/:projectId",ProjectController.update)
-apiRouter.delete("/api/projects/:projectId", ProjectController.remove)
-apiRouter.get("/api/projects", ProjectController.search)
 
-
+import {Dev_tablexController } from "../controller/dev-tablex-controller";
 
 
 //ROUTE Dev_tablex
+apiRouter.get("/api/dev_tablexs/projectid/:dev_tablexId",Dev_tablexController.getByProjectId)
 apiRouter.post("/api/dev_tablexs",Dev_tablexController.create)
 apiRouter.get("/api/dev_tablexs/:dev_tablexId",Dev_tablexController.get)
 apiRouter.put("/api/dev_tablexs/:dev_tablexId",Dev_tablexController.update)
 apiRouter.delete("/api/dev_tablexs/:dev_tablexId", Dev_tablexController.remove)
 apiRouter.get("/api/dev_tablexs", Dev_tablexController.search)
 
-//ROUTE Tablecoba
-// apiRouter.post("/api/tablecobas", TablecobaController.create)
-// apiRouter.get("/api/tablecobas/:tablecobaId", TablecobaController.get)
-// apiRouter.put("/api/tablecobas/:tablecobaId", TablecobaController.update)
-// apiRouter.delete("/api/tablecobas/:tablecobaId", TablecobaController.remove)
-// apiRouter.get("/api/tablecobas", TablecobaController.search)
+
+
+import {Dev_projectController } from "../controller/dev-project-controller";
+
+
+//ROUTE Dev_project
+apiRouter.post("/api/dev_projects",Dev_projectController.create)
+apiRouter.get("/api/dev_projects/:dev_projectId",Dev_projectController.get)
+apiRouter.put("/api/dev_projects/:dev_projectId",Dev_projectController.update)
+apiRouter.delete("/api/dev_projects/:dev_projectId", Dev_projectController.remove)
+apiRouter.get("/api/dev_projects", Dev_projectController.search)
 
 

@@ -1,0 +1,11 @@
+
+
+import {Dev_projectController } from "../controller/dev-project-controller";
+
+
+//ROUTE Dev_project
+apiRouter.post("/api/dev_projects",Dev_projectController.create)
+apiRouter.get("/api/dev_projects/:dev_projectId",Dev_projectController.get)
+apiRouter.put("/api/dev_projects/:dev_projectId",Dev_projectController.update)
+apiRouter.delete("/api/dev_projects/:dev_projectId", Dev_projectController.remove)
+apiRouter.get("/api/dev_projects", Dev_projectController.search)

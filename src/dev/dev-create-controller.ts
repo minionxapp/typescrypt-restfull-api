@@ -9,13 +9,14 @@ export class DevCreateController{
             const table = await DevUtil.getTable(tabelId)
             const tableName = (await Util.capitalizeFirstLetter(table.name))
             const tableNameLow = (await Util.lowerFirstLetter(tableName)).toString()
+            const fileName = await Util.fileNameFormat(tableName)
             const columns = await DevUtil.getColoumn(tabelId)
             let controller = '\n//Create Controller\n'
     
             controller = controller + ' import { Response,NextFunction } from "express";\n' +
                 'import { UserRequest } from "../type/user-request";\n' +
-                'import { Create' + tableName + 'Request,Search' + tableName + 'Request,Update' + tableName + 'Request } from "../model/' + tableNameLow + '-model";\n' +
-                'import { ' + tableName + 'Service } from "../service/' + tableNameLow + '-service";\n' +
+                'import { Create' + tableName + 'Request,Search' + tableName + 'Request,Update' + tableName + 'Request } from "../model/' + fileName + '-model";\n' +
+                'import { ' + tableName + 'Service } from "../service/' + fileName + '-service";\n' +
                 'import { number } from "zod";\n' +
                 'export class ' + tableName + 'Controller{\n' +
                 ' static async create(req:UserRequest,res:Response, next:NextFunction){\n' +

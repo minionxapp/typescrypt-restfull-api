@@ -35,7 +35,7 @@ export class DevCreateUtilTest {
                     }
                 }
                 if (element.type == 'Number') {
-                    utiltest = utiltest + element.name + ':1\n'
+                    utiltest = utiltest + element.name + ':1,\n'
                 }
             }
             utiltest = utiltest + '        create_by :"test"\n' + '    }\n' +

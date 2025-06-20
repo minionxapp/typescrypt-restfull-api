@@ -1,6 +1,6 @@
 import { prismaClient } from "../src/application/database";
 import bcrypt from "bcrypt"
-import { User, Contact, Tablecoba, Project, Dev_tablex } from "@prisma/client";
+import { User, Contact, Tablecoba, Dev_tablex ,Dev_project} from "@prisma/client";
 
 export class UserTest {
     //unutk menghapus user
@@ -112,69 +112,69 @@ export class TablecobaTest {
         return tablecoba
     }
 }
-//UTIL-TEST//tambahkan ke dalam file test-util.ts pada folder test 
-//CREATE UTIL-TEST Project
-export class ProjectTest {
-    static async deleteAll() {
-        await prismaClient.project.deleteMany({
-            where: {
-                create_by: "test"
-            }
-        })
-    }
-    static async create() {
-        await prismaClient.project.create({
-            data: {
-                project_id: 1,
-                name: "test",
-                desc: "test",
-                create_by: "test"
-            }
-        })
-    }
-    static async get(): Promise<Project> {
-        const project = await prismaClient.project.findFirst({
-            where: {
-                create_by: "test"
-            }
-        })
-        if (!project) {
-            throw new Error("Project is not found")
-        }
-        return project
-    }
-}
-
-//tambahkan Project pada import { User, Contact, Tablecoba } from "@prisma/client";
-//UTIL-TEST//tambahkan ke dalam file test-util.ts pada folder test 
+//============
+//tambahkan ke dalam file test-util.ts pada folder test 
 //CREATE UTIL-TEST Dev_tablex
-export class Dev_tablexTest {
-    static async deleteAll() {
-        await prismaClient.dev_tablex.deleteMany({
-            where: {
-                create_by: "test"
-            }
-        })
+export class Dev_tablexTest{
+  static async deleteAll(){
+await prismaClient.dev_tablex.deleteMany({
+    where :{
+        create_by :"test"
     }
-    static async create() {
-        await prismaClient.dev_tablex.create({
-            data: {
-                name: "test",
-                desc: "test",
-                create_by: "test"
-            }
-        })
+})
+} 
+  static async create(){
+await prismaClient.dev_tablex.create({
+    data :{
+name:"test",
+desc:"test",
+project_id:1,
+        create_by :"test"
     }
-    static async get(): Promise<Dev_tablex> {
-        const dev_tablex = await prismaClient.dev_tablex.findFirst({
-            where: {
-                create_by: "test"
-            }
-        })
-        if (!dev_tablex) {
-            throw new Error("Dev_tablex is not found")
-        }
-        return dev_tablex
+})
+}
+ static async get(): Promise<Dev_tablex> {
+ const dev_tablex = await prismaClient.dev_tablex.findFirst({
+    where: {
+       create_by: "test"
     }
+  })
+ if (!dev_tablex) {
+     throw new Error("Dev_tablex is not found")
+  }
+ return dev_tablex
+ }
 }
 //tambahkan Dev_tablex pada import { User, Contact, Tablecoba } from "@prisma/client";
+//tambahkan ke dalam file test-util.ts pada folder test 
+//CREATE UTIL-TEST Dev_project
+export class Dev_projectTest{
+  static async deleteAll(){
+await prismaClient.dev_project.deleteMany({
+    where :{
+        create_by :"test"
+    }
+})
+} 
+  static async create(){
+await prismaClient.dev_project.create({
+    data :{
+name:"test",
+desc:"test",
+        create_by :"test"
+    }
+})
+}
+ static async get(): Promise<Dev_project> {
+ const dev_project = await prismaClient.dev_project.findFirst({
+    where: {
+       create_by: "test"
+    }
+  })
+ if (!dev_project) {
+     throw new Error("Dev_project is not found")
+  }
+ return dev_project
+ }
+}
+//tambahkan Dev_project pada import { User, Contact, Tablecoba } from "@prisma/client";

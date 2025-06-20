@@ -1,0 +1,11 @@
+
+
+import {TablecobaController } from "../controller/tablecoba-controller";
+
+
+//ROUTE Tablecoba
+apiRouter.post("/api/tablecobas",TablecobaController.create)
+apiRouter.get("/api/tablecobas/:tablecobaId",TablecobaController.get)
+apiRouter.put("/api/tablecobas/:tablecobaId",TablecobaController.update)
+apiRouter.delete("/api/tablecobas/:tablecobaId", TablecobaController.remove)
+apiRouter.get("/api/tablecobas", TablecobaController.search)

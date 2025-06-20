@@ -20,4 +20,18 @@ exports.apiRouter.get("/api/contacts/:contactId", contact_controller_1.ContactCo
 exports.apiRouter.put("/api/contacts/:contactId", contact_controller_1.ContactController.update);
 exports.apiRouter.delete("/api/contacts/:contactId", contact_controller_1.ContactController.remove);
 exports.apiRouter.get("/api/contacts", contact_controller_1.ContactController.search);
-// apiRouter.delete("/api/contacts/:contactId(\\d+)", ContactController.remove);
+const dev_tablex_controller_1 = require("../controller/dev-tablex-controller");
+//ROUTE Dev_tablex
+exports.apiRouter.get("/api/dev_tablexs/projectid/:dev_tablexId", dev_tablex_controller_1.Dev_tablexController.getByProjectId);
+exports.apiRouter.post("/api/dev_tablexs", dev_tablex_controller_1.Dev_tablexController.create);
+exports.apiRouter.get("/api/dev_tablexs/:dev_tablexId", dev_tablex_controller_1.Dev_tablexController.get);
+exports.apiRouter.put("/api/dev_tablexs/:dev_tablexId", dev_tablex_controller_1.Dev_tablexController.update);
+exports.apiRouter.delete("/api/dev_tablexs/:dev_tablexId", dev_tablex_controller_1.Dev_tablexController.remove);
+exports.apiRouter.get("/api/dev_tablexs", dev_tablex_controller_1.Dev_tablexController.search);
+const dev_project_controller_1 = require("../controller/dev-project-controller");
+//ROUTE Dev_project
+exports.apiRouter.post("/api/dev_projects", dev_project_controller_1.Dev_projectController.create);
+exports.apiRouter.get("/api/dev_projects/:dev_projectId", dev_project_controller_1.Dev_projectController.get);
+exports.apiRouter.put("/api/dev_projects/:dev_projectId", dev_project_controller_1.Dev_projectController.update);
+exports.apiRouter.delete("/api/dev_projects/:dev_projectId", dev_project_controller_1.Dev_projectController.remove);
+exports.apiRouter.get("/api/dev_projects", dev_project_controller_1.Dev_projectController.search);
