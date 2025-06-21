@@ -11,7 +11,7 @@ static async createSchema(tabelId: number): Promise<String> {
         const table = await DevUtil.getTable(tabelId)
         const tableName = (await Util.capitalizeFirstLetter(table.name))
         const columns = await DevUtil.getColoumn(tabelId)
-        let model = "//Screate Schema\n //schema.prisma\n\n"
+        let model = "\n//Create Schema\n//schema.prisma\n\n"
         model = model + 'model ' + (await Util.capitalizeFirstLetter(tableName)).toString() + ' {\n'
         model = model + 'id         Int    @id @default(autoincrement())\n'
         for (let index = 0; index < columns.length; index++) {
@@ -28,7 +28,7 @@ static async createSchema(tabelId: number): Promise<String> {
                 model = model + " Int \n"
             }
         }
-        model = model + ' create_by   String  @db.VarChar(20)\n' +
+        model = model + 'create_by   String  @db.VarChar(20)\n' +
             'update_by   String?  @db.VarChar(20)\n' +
             'create_at   DateTime? \n' +
             'update_at   DateTime? \n'

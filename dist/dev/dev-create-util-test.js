@@ -19,7 +19,7 @@ class DevCreateUtilTest {
             const tableName = (yield util_1.Util.capitalizeFirstLetter(table.name));
             const tableNameLow = (yield util_1.Util.lowerFirstLetter(tableName)).toString();
             const columns = yield dev_util_1.DevUtil.getColoumn(tabelId);
-            let utiltest = '//tambahkan ke dalam file test-util.ts pada folder test \n//CREATE UTIL-TEST ' + tableName + '\n';
+            let utiltest = '\n//CREATE UTIL-TEST ' + tableName + '\n//Tambahkan ke dalam file test-util.ts pada folder test \n' + '\n';
             //util-test delete
             utiltest = utiltest + 'export class ' + tableName + 'Test{\n';
             utiltest = utiltest + '  static async deleteAll(){\n' +

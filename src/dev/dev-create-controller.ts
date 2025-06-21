@@ -11,9 +11,9 @@ export class DevCreateController{
             const tableNameLow = (await Util.lowerFirstLetter(tableName)).toString()
             const fileName = await Util.fileNameFormat(tableName)
             const columns = await DevUtil.getColoumn(tabelId)
-            let controller = '\n//Create Controller\n'
+            let controller = '\n//Create Controller\n\n'
     
-            controller = controller + ' import { Response,NextFunction } from "express";\n' +
+            controller = controller + 'import { Response,NextFunction } from "express";\n' +
                 'import { UserRequest } from "../type/user-request";\n' +
                 'import { Create' + tableName + 'Request,Search' + tableName + 'Request,Update' + tableName + 'Request } from "../model/' + fileName + '-model";\n' +
                 'import { ' + tableName + 'Service } from "../service/' + fileName + '-service";\n' +

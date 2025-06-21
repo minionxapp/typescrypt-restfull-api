@@ -20,8 +20,8 @@ class DevCreateController {
             const tableNameLow = (yield util_1.Util.lowerFirstLetter(tableName)).toString();
             const fileName = yield util_1.Util.fileNameFormat(tableName);
             const columns = yield dev_util_1.DevUtil.getColoumn(tabelId);
-            let controller = '\n//Create Controller\n';
-            controller = controller + ' import { Response,NextFunction } from "express";\n' +
+            let controller = '\n//Create Controller\n\n';
+            controller = controller + 'import { Response,NextFunction } from "express";\n' +
                 'import { UserRequest } from "../type/user-request";\n' +
                 'import { Create' + tableName + 'Request,Search' + tableName + 'Request,Update' + tableName + 'Request } from "../model/' + fileName + '-model";\n' +
                 'import { ' + tableName + 'Service } from "../service/' + fileName + '-service";\n' +

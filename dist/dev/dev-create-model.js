@@ -19,7 +19,7 @@ class DevCreateModel {
             const tableName = (yield util_1.Util.capitalizeFirstLetter(table.name));
             const columns = yield dev_util_1.DevUtil.getColoumn(tabelId);
             //tabelResponse
-            let model = '//CreateModel\n//' + tableName + '-model.ts\n';
+            let model = '\n//CreateModel\n//' + tableName + '-model.ts\n\n';
             model = model + "import { " + tableName + " } from '@prisma/client'\n";
             model = model + 'export type ' + tableName + 'Response = {\nid: number,\n';
             for (let index = 0; index < columns.length; index++) {

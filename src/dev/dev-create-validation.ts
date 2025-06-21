@@ -8,7 +8,7 @@ static async createValidation(tabelId: number): Promise<String> {
         const table = await DevUtil.getTable(tabelId)
         const tableName = (await Util.capitalizeFirstLetter(table.name))
         const columns = await DevUtil.getColoumn(tabelId)
-        let validatex = "//CREATE validation " + tableName + "-validation.ts\n\n"
+        let validatex = "\n//CREATE validation " + tableName + "-validation.ts\n"
         validatex = validatex + '//CREATE validation\n'
         validatex = validatex + '\nimport { z, ZodType } from "zod"; \n\n'
         validatex = validatex + 'export class ' + tableName + 'Validation {\n'

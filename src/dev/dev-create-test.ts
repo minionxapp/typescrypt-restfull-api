@@ -11,8 +11,8 @@ export class DevCreateTest {
         const tableNameLow = (await Util.lowerFirstLetter(tableName)).toString()
         const columns = await DevUtil.getColoumn(tabelId)
 
-        let test = '//Test ' + tableName + '\n'
-        test = test + ' import supertest from "supertest"\n' +
+        let test = '\n//Test ' + tableName + '\n\n'
+        test = test + 'import supertest from "supertest"\n' +
             ' import { web } from "../src/application/web"\n' +
             ' import { ' + tableName + 'Test, UserTest } from "../test/test-util"\n' +
             ' import { logger } from "../src/application/logging"\n'
@@ -20,11 +20,11 @@ export class DevCreateTest {
         test = test + '//Create test\n' +
             ' describe("POST /api/' + tableNameLow + 's", () => {\n' +
             ' \n'
-        let pratest = '  beforeEach(async () => {\n' +
+        let pratest = ' beforeEach(async () => {\n' +
             ' await UserTest.create()\n' +
             ' await ' + tableName + 'Test.create()\n' +
             ' }) \n'
-        pratest = pratest + '  afterEach(async () => {\n' +
+        pratest = pratest + ' afterEach(async () => {\n' +
             ' await ' + tableName + 'Test.deleteAll() //buatkan di util-test dulu\n' +
             ' await UserTest.delete()\n' +
             ' })\n'

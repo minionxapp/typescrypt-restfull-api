@@ -12,7 +12,7 @@ export class DevCreateModel {
         const tableName = (await Util.capitalizeFirstLetter(table.name))
         const columns = await DevUtil.getColoumn(tabelId)
         //tabelResponse
-        let model = '//CreateModel\n//' + tableName + '-model.ts\n'
+        let model = '\n//CreateModel\n//' + tableName + '-model.ts\n\n'
         model = model + "import { " + tableName + " } from '@prisma/client'\n"
 
         model = model + 'export type ' + tableName + 'Response = {\nid: number,\n'

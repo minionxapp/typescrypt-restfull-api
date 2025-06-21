@@ -12,14 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DevCreateFile = void 0;
 const util_1 = require("../util/util");
 const dev_util_1 = require("../dev/dev-util");
-const dev_create_model_1 = require("./dev-create-model");
-const dev_create_validation_1 = require("./dev-create-validation");
-const dev_create_service_1 = require("./dev-create-service");
-const dev_create_controller_1 = require("./dev-create-controller");
-const dev_create_test_1 = require("./dev-create-test");
-const dev_create_route_1 = require("./dev-create-route");
-const dev_create_util_test_1 = require("./dev-create-util-test");
-const dev_create_schema_1 = require("./dev-create-schema");
 class DevCreateFile {
     static createFiles(tabelId) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -39,33 +31,44 @@ class DevCreateFile {
             const folderUtilTest = 'src/coba/'; //'test/'
             const folderRoute = 'src/coba/'; //'test/'
             const folderSchema = 'src/coba/'; //'test/'
-            file = folder + folderModel + fileName + '-model.ts\n';
-            util_1.Util.createFile(file, (yield dev_create_model_1.DevCreateModel.createModel(tabelId)).toString());
-            file = folder + folderValidation + fileName + '-validation.ts\n\n';
-            util_1.Util.createFile(file, (yield dev_create_validation_1.DevCreateValidation.createValidation(tabelId)).toString());
-            file = folder + folderService + fileName + '-service.ts\n\n';
-            util_1.Util.createFile(file, (yield dev_create_service_1.DevCreateService.createService(tabelId)).toString());
-            file = folder + folderController + fileName + '-controller.ts\n\n';
-            util_1.Util.createFile(file, (yield dev_create_controller_1.DevCreateController.createController(tabelId)).toString());
-            file = folder + folderTest + fileName + '.test.ts\n\n';
-            util_1.Util.createFile(file, (yield dev_create_test_1.DevCreateTest.createTest(tabelId)).toString());
-            file = folder + 'src/coba/' + fileName + '-route.txt\n\n';
-            util_1.Util.createFile(file, (yield dev_create_route_1.DevCreateRoute.createRoute(tabelId)).toString());
-            file = folder + 'src/coba/' + fileName + '-util-test.txt\n\n';
-            util_1.Util.createFile(file, (yield dev_create_util_test_1.DevCreateUtilTest.createUtilTest(tabelId)).toString());
-            file = folder + 'src/coba/' + fileName + '-schema.txt\n\n';
-            util_1.Util.createFile(file, (yield dev_create_schema_1.DevCreateSchema.createSchema(tabelId)).toString());
-            folder = 'rm /Users/macbook/Mugi_data/workspace/typescript/belajar-typescript-restful-api/';
-            file = file + folder + folderModel + tableName + '-model.ts\n';
-            file = file + folder + folderValidation + tableName + '-validation.ts\n';
-            file = file + folder + folderService + tableName + '-service.ts\n';
-            file = file + folder + folderController + tableName + '-controller.ts\n';
-            file = file + folder + folderTest + tableName + '.test.ts\n';
-            file = file + folder + folderUtilTest + tableName + '-util-test.txt\n';
-            file = file + folder + folderRoute + tableName + '-route.txt\n';
+            // file = folder + folderModel + fileName + '-model.ts\n'
+            // // Util.createFile(file, (await DevCreateModel.createModel(tabelId)).toString())
+            // file = folder + folderValidation + fileName + '-validation.ts\n\n'
+            // // Util.createFile(file, (await DevCreateValidation.createValidation(tabelId)).toString())
+            // file = folder + folderService + fileName + '-service.ts\n\n'
+            // // Util.createFile(file, (await DevCreateService.createService(tabelId)).toString())
+            // file = folder + folderController + fileName + '-controller.ts\n\n'
+            // // Util.createFile(file, (await DevCreateController.createController(tabelId)).toString())
+            // file = folder + folderTest + fileName + '.test.ts\n\n'
+            // // Util.createFile(file, (await DevCreateTest.createTest(tabelId)).toString())
+            // file = folder + 'src/coba/' + fileName + '-route.txt\n\n'
+            // // Util.createFile(file, (await DevCreateRoute.createRoute(tabelId)).toString())
+            // file = folder + 'src/coba/' + fileName + '-util-test.txt\n\n'
+            // // Util.createFile(file, (await DevCreateUtilTest.createUtilTest(tabelId)).toString())
+            // file = folder + 'src/coba/' + fileName + '-schema.txt\n\n'
+            // Util.createFile(file, (await DevCreateSchema.createSchema(tabelId)).toString())
+            file = file + "\nCREATE FILE";
+            folder = '\ntouch /Users/macbook/Mugi_data/workspace/typescript/belajar-typescript-restful-api/';
+            file = file + folder + folderModel + tableName + '-model.ts';
+            file = file + folder + folderValidation + tableName + '-validation.ts';
+            file = file + folder + folderService + tableName + '-service.ts';
+            file = file + folder + folderController + tableName + '-controller.ts';
+            file = file + folder + folderTest + tableName + '.test.ts';
+            file = file + folder + folderUtilTest + tableName + '-util-test.txt';
+            file = file + folder + folderRoute + tableName + '-route.txt';
+            file = file + folder + folderSchema + tableName + '-schema.txt\n';
+            file = file + "\nREMOVE FILE";
+            folder = '\nrm /Users/macbook/Mugi_data/workspace/typescript/belajar-typescript-restful-api/';
+            file = file + folder + folderModel + tableName + '-model.ts';
+            file = file + folder + folderValidation + tableName + '-validation.ts';
+            file = file + folder + folderService + tableName + '-service.ts';
+            file = file + folder + folderController + tableName + '-controller.ts';
+            file = file + folder + folderTest + tableName + '.test.ts';
+            file = file + folder + folderUtilTest + tableName + '-util-test.txt';
+            file = file + folder + folderRoute + tableName + '-route.txt';
             file = file + folder + folderSchema + tableName + '-schema.txt\n';
             // console.log(file)
-            return '';
+            return file;
         });
     }
 }

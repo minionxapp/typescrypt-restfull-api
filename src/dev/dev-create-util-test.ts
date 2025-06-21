@@ -10,7 +10,7 @@ export class DevCreateUtilTest {
             const tableNameLow = (await Util.lowerFirstLetter(tableName)).toString()
             const columns = await DevUtil.getColoumn(tabelId)
     
-            let utiltest = '//tambahkan ke dalam file test-util.ts pada folder test \n//CREATE UTIL-TEST ' + tableName + '\n'
+            let utiltest ='\n//CREATE UTIL-TEST ' + tableName + '\n//Tambahkan ke dalam file test-util.ts pada folder test \n'+ '\n'
             //util-test delete
             utiltest = utiltest + 'export class ' + tableName + 'Test{\n'
             utiltest = utiltest + '  static async deleteAll(){\n' +

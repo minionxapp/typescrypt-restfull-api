@@ -10,7 +10,7 @@ export class DevCreateService {
         const tableName = (await Util.capitalizeFirstLetter(table.name))
         const columns = await DevUtil.getColoumn(tabelId)
  const fileName = await Util.fileNameFormat(tableName)
-        let servicex = '//Create Service \n\n//utuk coba--> disesuaikan dulu\n'
+        let servicex = '\n//Create Service \n\n'
         servicex = servicex + 'import { prismaClient } from "../application/database";\n' +
             'import { ResponseError } from "../error/response-error";\n' +
             'import { ' + tableName + 'Response, Create' + tableName + 'Request, Search' + tableName + 'Request, to' + tableName + 'Response, Update' + tableName + 'Request } from "../model/' +
