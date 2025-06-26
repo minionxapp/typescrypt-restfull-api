@@ -122,7 +122,8 @@ class Dev_tablexService {
                 paging: {
                     current_page: searchRequest.page,
                     total_page: Math.ceil(total / searchRequest.size),
-                    size: searchRequest.size
+                    size: searchRequest.size,
+                    total_rows: total
                 }
             };
         });

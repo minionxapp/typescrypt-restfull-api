@@ -2,8 +2,8 @@ import express from "express"
 import { authMiddleware } from "../middleware/auth-middleware";
 import { UserController } from "../controller/user-controller";
 import { ContactController } from "../controller/contact-controller";
-
-
+import {Dev_projectController } from "../controller/dev-project-controller";
+import {Dev_tablexController } from "../controller/dev-tablex-controller";
 
 export const apiRouter = express.Router();
 apiRouter.use(authMiddleware);
@@ -22,7 +22,7 @@ apiRouter.get("/api/contacts", ContactController.search)
 
 
 
-import {Dev_tablexController } from "../controller/dev-tablex-controller";
+
 
 
 //ROUTE Dev_tablex
@@ -35,7 +35,7 @@ apiRouter.get("/api/dev_tablexs", Dev_tablexController.search)
 
 
 
-import {Dev_projectController } from "../controller/dev-project-controller";
+
 
 
 //ROUTE Dev_project

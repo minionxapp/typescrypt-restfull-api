@@ -129,7 +129,8 @@ export class DevCreateService {
             '    paging: {\n' +
             '        current_page: searchRequest.page,\n' +
             '        total_page: Math.ceil(total / searchRequest.size),\n' +
-            '        size: searchRequest.size\n' +
+            '        size: searchRequest.size,\n' +
+            '        total_rows:total\n'+
             '    }\n' +
             '}\n}\n'
         servicex = servicex + '\n}'

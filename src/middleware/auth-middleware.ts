@@ -12,7 +12,6 @@ export const authMiddleware = async(req:UserRequest/*Request*/, res:Response,nex
                 token: token
             }
         })
-
         //jika user ada
         if(user){
             req.user = user;//iawal ini error, 
@@ -20,6 +19,7 @@ export const authMiddleware = async(req:UserRequest/*Request*/, res:Response,nex
             // req punyanya express (Request)
             //bikin userRequest yang mengextend Request dari express
             next()
+
             return;
 
         }
