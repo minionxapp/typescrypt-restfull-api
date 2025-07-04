@@ -52,7 +52,6 @@ export class Dev_projectController {
         }
     }
     static async search(req: UserRequest, res: Response, next: NextFunction) {
-        // console.log("search=====================")
         try {
             const request: SearchDev_projectRequest = {
                 name: req.query.name as string,
@@ -61,8 +60,6 @@ export class Dev_projectController {
                 size: req.query.size ? Number(req.query.size) : 10,
             }
             const response = await Dev_projectService.search(req.user!, request);
-            // console.log("response=============")
-            // console.log(response)
             res.status(200).json(response);
         } catch (e) {
             next(e);

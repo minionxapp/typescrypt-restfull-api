@@ -5,7 +5,7 @@ import { DevTableColumnResponse, DevTableResponse, toDevTableColumnResponse, toD
 
 export class DevUtil{
     static async getColoumn(tabelId: number): Promise<Array<DevTableColumnResponse>> {
-            const result = await prismaClient.devTableColumn.findMany({
+            const result = await prismaClient.devTableKolom.findMany({
                 where: {
                     table_id: tabelId
                 }
@@ -14,7 +14,7 @@ export class DevUtil{
         }
         //ambil table
         static async getTable(tabelId: number): Promise<DevTableResponse> {
-            const result = await prismaClient.devTable.findFirst({
+            const result = await prismaClient.dev_tablex.findFirst({
                 where: {
                     id: tabelId
                 }

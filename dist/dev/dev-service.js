@@ -28,7 +28,7 @@ class DevService {
     // ambil table
     static getTable(tabelId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield database_1.prismaClient.devTable.findFirst({
+            const result = yield database_1.prismaClient.dev_tablex.findFirst({
                 where: {
                     id: tabelId
                 }

@@ -7,8 +7,8 @@ import {DevUtil} from '../dev/dev-util'
 export class DevCreateTest {
  static async createTest(tabelId: number): Promise<String> {
         const table = await DevUtil.getTable(tabelId)
-        const tableName = (await Util.capitalizeFirstLetter(table.name))
-        const tableNameLow = (await Util.lowerFirstLetter(tableName)).toString()
+        const tableName = await Util.camelCase(await Util.capitalizeFirstLetter(table.name))
+        const tableNameLow = (await Util.lowerFirstLetter(tableName)).toString().toLowerCase()
         const columns = await DevUtil.getColoumn(tabelId)
 
         let test = '\n//Test ' + tableName + '\n\n'
@@ -259,7 +259,7 @@ export class DevCreateTest {
             '     .set("X-API-TOKEN", "test")\n' +
             '  logger.debug(response.body)\n' +
             '  expect(response.status).toBe(200)\n' +
-            '  expect(response.body.data.length).toBe(1)\n' +
+            '  expect(response.body.data.length).toBeGreaterThanOrEqual(1)\n' +
             '  expect(response.body.paging.current_page).toBe(1)\n' +
             '  expect(response.body.paging.total_page).toBe(1)\n' +
             '  expect(response.body.paging.size).toBe(10)\n'

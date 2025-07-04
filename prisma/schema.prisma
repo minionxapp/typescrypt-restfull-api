@@ -50,18 +50,18 @@ model Tablecoba {
   @@map("tablecobas")
 }
 
-model DevTable {
-  id         Int       @id @default(autoincrement())
-  project_id Int
-  name       String    @db.VarChar(100)
-  desc       String    @db.VarChar(255)
-  create_by  String    @default("admin") @db.VarChar(20)
-  update_by  String?   @db.VarChar(20)
-  create_at  DateTime?
-  update_at  DateTime?
+// model DevTable {
+//   id         Int       @id @default(autoincrement())
+//   project_id Int
+//   name       String    @db.VarChar(100)
+//   desc       String    @db.VarChar(255)
+//   create_by  String    @default("admin") @db.VarChar(20)
+//   update_by  String?   @db.VarChar(20)
+//   create_at  DateTime?
+//   update_at  DateTime?
 
-  @@map("dev_tables")
-}
+//   @@map("dev_tables")
+// }
 
 model DevTableColumn {
   id         Int    @id @default(autoincrement())
@@ -139,4 +139,39 @@ model Dev_tablex {
   project_id Int
 
   @@map("dev_tablexs")
+}
+
+//Create Schema
+//schema.prisma
+
+model DevTableKolom {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(100)
+  table_id   Int
+  table_name String    @db.VarChar(100)
+  desc       String    @db.VarChar(100)
+  length     Int
+  is_id      String    @db.VarChar(100)
+  is_null    String    @db.VarChar(100)
+  is_uniq    String    @db.VarChar(100)
+  default    String    @db.VarChar(100)
+  type       String    @db.VarChar(100)
+  create_by  String    @db.VarChar(20)
+  update_by  String?   @db.VarChar(20)
+  create_at  DateTime?
+  update_at  DateTime?
+
+  @@map("dev_table_koloms")
+}
+
+model DevDirektori {
+  id        Int       @id @default(autoincrement())
+  username  String   @unique @db.VarChar(100) 
+  direktori String?   @db.VarChar(250)
+  create_by String    @db.VarChar(20)
+  update_by String?   @db.VarChar(20)
+  create_at DateTime?
+  update_at DateTime?
+
+  @@map("dev_direktoris")
 }

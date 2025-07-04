@@ -7,7 +7,7 @@ import {DevUtil} from '../dev/dev-util'
 export class DevCreateController{
      static async createController(tabelId: number): Promise<String> {
             const table = await DevUtil.getTable(tabelId)
-            const tableName = (await Util.capitalizeFirstLetter(table.name))
+            const tableName = await Util.camelCase(await Util.capitalizeFirstLetter(table.name))
             const tableNameLow = (await Util.lowerFirstLetter(tableName)).toString()
             const fileName = await Util.fileNameFormat(tableName)
             const columns = await DevUtil.getColoumn(tabelId)
@@ -15,8 +15,8 @@ export class DevCreateController{
     
             controller = controller + 'import { Response,NextFunction } from "express";\n' +
                 'import { UserRequest } from "../type/user-request";\n' +
-                'import { Create' + tableName + 'Request,Search' + tableName + 'Request,Update' + tableName + 'Request } from "../model/' + fileName + '-model";\n' +
-                'import { ' + tableName + 'Service } from "../service/' + fileName + '-service";\n' +
+                'import { Create' + tableName + 'Request,Search' + tableName + 'Request,Update' + tableName + 'Request } from "../model/' + tableName + '-model";\n' +
+                'import { ' + tableName + 'Service } from "../service/' + tableName + '-service";\n' +
                 'import { number } from "zod";\n' +
                 'export class ' + tableName + 'Controller{\n' +
                 ' static async create(req:UserRequest,res:Response, next:NextFunction){\n' +

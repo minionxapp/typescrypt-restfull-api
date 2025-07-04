@@ -21,6 +21,7 @@ Dev_tablexValidation.UPDATE = zod_1.z.object({
 });
 //SEARCH validation
 Dev_tablexValidation.SEARCH = zod_1.z.object({
+    project_id: zod_1.z.number().min(1).positive(),
     name: zod_1.z.string().min(1).optional(),
     desc: zod_1.z.string().min(1).optional(),
     page: zod_1.z.number().min(1).positive(),

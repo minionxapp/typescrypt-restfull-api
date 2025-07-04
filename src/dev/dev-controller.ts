@@ -16,6 +16,7 @@ export class DevController {
     static async get(req: Request, res: Response, next: NextFunction) {
         try {
             const tabelId = Number(req.params.tableId)
+            console.log("disni test .............."+tabelId)
             res.status(200).json({
                 data: {
                     schema : await DevCreateSchema.createSchema(tabelId),

@@ -1,4 +1,4 @@
-import { DevTableColumn, DevTable } from "@prisma/client";
+import { DevTableColumn, Dev_tablex } from "@prisma/client";
 /*
 model DevTableColumn {
   id         Int    @id @default(autoincrement())
@@ -49,7 +49,7 @@ export type DevTableResponse = {
     name: string,
     desc: string | null
 }
-export function toDevTableResponse(devTable: DevTable): DevTableResponse {
+export function toDevTableResponse(devTable: Dev_tablex): DevTableResponse {
     return {
         id: devTable.id,
         name: devTable.name,

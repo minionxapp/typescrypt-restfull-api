@@ -19,6 +19,7 @@ project_id: z.number().min(1).positive(),})
 
 //SEARCH validation
 static readonly SEARCH: ZodType = z.object({
+project_id: z.number().min(1).positive(),
 name: z.string().min(1).optional(),
 desc: z.string().min(1).optional(),
 page : z.number().min(1).positive(),

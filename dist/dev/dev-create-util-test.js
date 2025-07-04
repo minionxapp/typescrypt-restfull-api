@@ -16,9 +16,11 @@ class DevCreateUtilTest {
     static createUtilTest(tabelId) {
         return __awaiter(this, void 0, void 0, function* () {
             const table = yield dev_util_1.DevUtil.getTable(tabelId);
-            const tableName = (yield util_1.Util.capitalizeFirstLetter(table.name));
+            // const tableName = (await Util.capitalizeFirstLetter(table.name))
+            const tableName = yield util_1.Util.camelCase(yield util_1.Util.capitalizeFirstLetter(table.name));
             const tableNameLow = (yield util_1.Util.lowerFirstLetter(tableName)).toString();
             const columns = yield dev_util_1.DevUtil.getColoumn(tabelId);
+            // (await Util.lowerFirstLetter(tableName)).toString()
             let utiltest = '\n//CREATE UTIL-TEST ' + tableName + '\n//Tambahkan ke dalam file test-util.ts pada folder test \n' + '\n';
             //util-test delete
             utiltest = utiltest + 'export class ' + tableName + 'Test{\n';
@@ -31,7 +33,7 @@ class DevCreateUtilTest {
                 '} \n';
             //util-test create 
             utiltest = utiltest + '  static async create(){\n' +
-                'await prismaClient.' + tableNameLow + '.create({\n' +
+                'await prismaClient.' + (yield util_1.Util.lowerFirstLetter(tableName)).toString() + '.create({\n' +
                 '    data :{\n';
             for (let index = 0; index < columns.length; index++) {
                 const element = columns[index];
@@ -54,7 +56,7 @@ class DevCreateUtilTest {
             utiltest = utiltest + '}\n';
             //util-test get
             utiltest = utiltest + ' static async get(): Promise<' + tableName + '> {\n' +
-                ' const ' + tableNameLow + ' = await prismaClient.' + tableNameLow + '.findFirst({\n' +
+                ' const ' + tableNameLow + ' = await prismaClient.' + (yield util_1.Util.lowerFirstLetter(tableName)).toString() + '.findFirst({\n' +
                 '    where: {\n' +
                 '       create_by: "test"\n' +
                 '    }\n' +

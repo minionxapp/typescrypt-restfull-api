@@ -2,27 +2,53 @@ import { DevTableColumn } from "@prisma/client"
 import { prismaClient } from "../application/database"
 import { Util } from "../util/util";
 import { DevTableColumnResponse, DevTableResponse, toDevTableColumnResponse, toDevTableResponse } from "../dev/dev-model"
-import {DevUtil} from '../dev/dev-util'
+import { DevUtil } from '../dev/dev-util'
 
 export class DevCreateService {
-     static async createService(tabelId: number): Promise<String> {
+    static async createService(tabelId: number): Promise<String> {
         const table = await DevUtil.getTable(tabelId)
-        const tableName = (await Util.capitalizeFirstLetter(table.name))
+        const tableName = await Util.camelCase(await Util.capitalizeFirstLetter(table.name))
         const columns = await DevUtil.getColoumn(tabelId)
- const fileName = await Util.fileNameFormat(tableName)
+        const fileName = await Util.fileNameFormat(tableName)
         let servicex = '\n//Create Service \n\n'
         servicex = servicex + 'import { prismaClient } from "../application/database";\n' +
             'import { ResponseError } from "../error/response-error";\n' +
             'import { ' + tableName + 'Response, Create' + tableName + 'Request, Search' + tableName + 'Request, to' + tableName + 'Response, Update' + tableName + 'Request } from "../model/' +
-            fileName + '-model";\n' +
+            tableName + '-model";\n' +
             'import { Pageable } from "../model/page";\n' +
-            'import { ' + tableName + 'Validation } from "../validation/' +fileName+ '-validation";\n' +
+            'import { ' + tableName + 'Validation } from "../validation/' + tableName + '-validation";\n' +
             'import { Validation } from "../validation/validation";\n' +
             'import { User, ' + tableName + ' } from "@prisma/client";\n' +
             'export class ' + tableName + 'Service {\n' +
             'static async create(user: User, request: Create' + tableName + 'Request): Promise<' + tableName + 'Response> {\n' +
             'const createRequest = Validation.validate(' + tableName + 'Validation.CREATE, request)\n' +
-            'const record = {\n' +
+            '//belum ada validasi bila tidak boleh sama (uniq) dalam kolom\n'
+        /*
+        const totalUserWithSameUsername = await prismaClient.user.count({
+                where: {
+                    username : registerRequest.username
+                }
+            })
+            if(totalUserWithSameUsername !=0){
+                throw new ResponseError(400,"Username already axist");
+            }
+        */
+        for (let index = 0; index < columns.length; index++) {
+            const element = columns[index];
+            if (element.is_uniq == 'Y') {
+            servicex = servicex +'const total'+element.name+'Uniq = await prismaClient.user.count({\n'+
+                'where: {\n'+
+                '    '+element.name+' : createRequest.'+element.name+'\n'+
+                '}\n'+
+            '})\n'+
+            'if(total'+element.name+'Uniq !=0){\n'+
+            '    throw new ResponseError(400,"'+element.name+' already axist");\n'+
+            '}\n'+'\n'
+            }
+        }
+
+
+        servicex = servicex + 'const record = {\n' +
             '...createRequest,//dari object yang ada\n' +
             '...{ create_by: user.name }, //tambahkan username, dengan value dari object user\n' +
             ' ...{ create_at: new Date()}}  //tambahkan username, dengan value dari object user' +
@@ -130,7 +156,7 @@ export class DevCreateService {
             '        current_page: searchRequest.page,\n' +
             '        total_page: Math.ceil(total / searchRequest.size),\n' +
             '        size: searchRequest.size,\n' +
-            '        total_rows:total\n'+
+            '        total_rows:total\n' +
             '    }\n' +
             '}\n}\n'
         servicex = servicex + '\n}'

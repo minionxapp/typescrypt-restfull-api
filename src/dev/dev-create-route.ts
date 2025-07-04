@@ -6,10 +6,10 @@ import {DevUtil} from '../dev/dev-util'
 export class DevCreateRoute {
 static async createRoute(tabelId: number): Promise<String> {
         const table = await DevUtil.getTable(tabelId)
-        const tableName = (await Util.capitalizeFirstLetter(table.name))
+        const tableName = await Util.camelCase(await Util.capitalizeFirstLetter(table.name))
         const tableNameLow = (await Util.lowerFirstLetter(tableName)).toString()
 const fileName = await Util.fileNameFormat(tableName)
-        let route = '\n//ROUTE ' + tableName + '\n\nimport {' + tableName + 'Controller } from "../controller/' + fileName + '-controller";\n\n\n'+'\n' +
+        let route = '\n//ROUTE ' + tableName + '\n\nimport {' + tableName + 'Controller } from "../controller/' + tableName + '-controller";\n\n\n'+'\n' +
             'apiRouter.post("/api/' + tableNameLow + 's",' + tableName + 'Controller.create)\n' +
             'apiRouter.get("/api/' + tableNameLow + 's/:' + tableNameLow + 'Id",' + tableName + 'Controller.get)\n' +
             'apiRouter.put("/api/' + tableNameLow + 's/:' + tableNameLow + 'Id",' + tableName + 'Controller.update)\n' +

@@ -16,22 +16,46 @@ class DevCreateService {
     static createService(tabelId) {
         return __awaiter(this, void 0, void 0, function* () {
             const table = yield dev_util_1.DevUtil.getTable(tabelId);
-            const tableName = (yield util_1.Util.capitalizeFirstLetter(table.name));
+            const tableName = yield util_1.Util.camelCase(yield util_1.Util.capitalizeFirstLetter(table.name));
             const columns = yield dev_util_1.DevUtil.getColoumn(tabelId);
             const fileName = yield util_1.Util.fileNameFormat(tableName);
             let servicex = '\n//Create Service \n\n';
             servicex = servicex + 'import { prismaClient } from "../application/database";\n' +
                 'import { ResponseError } from "../error/response-error";\n' +
                 'import { ' + tableName + 'Response, Create' + tableName + 'Request, Search' + tableName + 'Request, to' + tableName + 'Response, Update' + tableName + 'Request } from "../model/' +
-                fileName + '-model";\n' +
+                tableName + '-model";\n' +
                 'import { Pageable } from "../model/page";\n' +
-                'import { ' + tableName + 'Validation } from "../validation/' + fileName + '-validation";\n' +
+                'import { ' + tableName + 'Validation } from "../validation/' + tableName + '-validation";\n' +
                 'import { Validation } from "../validation/validation";\n' +
                 'import { User, ' + tableName + ' } from "@prisma/client";\n' +
                 'export class ' + tableName + 'Service {\n' +
                 'static async create(user: User, request: Create' + tableName + 'Request): Promise<' + tableName + 'Response> {\n' +
                 'const createRequest = Validation.validate(' + tableName + 'Validation.CREATE, request)\n' +
-                'const record = {\n' +
+                '//belum ada validasi bila tidak boleh sama (uniq) dalam kolom\n';
+            /*
+            const totalUserWithSameUsername = await prismaClient.user.count({
+                    where: {
+                        username : registerRequest.username
+                    }
+                })
+                if(totalUserWithSameUsername !=0){
+                    throw new ResponseError(400,"Username already axist");
+                }
+            */
+            for (let index = 0; index < columns.length; index++) {
+                const element = columns[index];
+                if (element.is_uniq == 'Y') {
+                    servicex = servicex + 'const total' + element.name + 'Uniq = await prismaClient.user.count({\n' +
+                        'where: {\n' +
+                        '    ' + element.name + ' : createRequest.' + element.name + '\n' +
+                        '}\n' +
+                        '})\n' +
+                        'if(total' + element.name + 'Uniq !=0){\n' +
+                        '    throw new ResponseError(400,"' + element.name + ' already axist");\n' +
+                        '}\n' + '\n';
+                }
+            }
+            servicex = servicex + 'const record = {\n' +
                 '...createRequest,//dari object yang ada\n' +
                 '...{ create_by: user.name }, //tambahkan username, dengan value dari object user\n' +
                 ' ...{ create_at: new Date()}}  //tambahkan username, dengan value dari object user' +

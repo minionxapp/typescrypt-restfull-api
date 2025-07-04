@@ -15,9 +15,12 @@ const dev_util_1 = require("../dev/dev-util");
 class DevCreateSchema {
     static createSchema(tabelId) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log("createSchema");
             const table = yield dev_util_1.DevUtil.getTable(tabelId);
-            const tableName = (yield util_1.Util.capitalizeFirstLetter(table.name));
+            const tableName = yield util_1.Util.camelCase((yield util_1.Util.capitalizeFirstLetter(table.name)));
+            const tableNamex = (yield util_1.Util.capitalizeFirstLetter(table.name));
             const columns = yield dev_util_1.DevUtil.getColoumn(tabelId);
+            const tableNameLow = (yield util_1.Util.lowerFirstLetter(tableNamex)).toString();
             let model = "\n//Create Schema\n//schema.prisma\n\n";
             model = model + 'model ' + (yield util_1.Util.capitalizeFirstLetter(tableName)).toString() + ' {\n';
             model = model + 'id         Int    @id @default(autoincrement())\n';
@@ -29,7 +32,12 @@ class DevCreateSchema {
                         model = model + " String? @db.VarChar" + '(' + element.length + ')\n';
                     }
                     else {
-                        model = model + " String @db.VarChar" + '(' + element.length + ')\n';
+                        if (element.is_uniq == 'Y') {
+                            model = model + " String @unique @db.VarChar" + '(' + element.length + ')\n';
+                        }
+                        else {
+                            model = model + " String @db.VarChar" + '(' + element.length + ')\n';
+                        }
                     }
                 }
                 if (element.type == 'Number') {
@@ -40,7 +48,8 @@ class DevCreateSchema {
                 'update_by   String?  @db.VarChar(20)\n' +
                 'create_at   DateTime? \n' +
                 'update_at   DateTime? \n';
-            model = model + '@@map("' + (tableName.toLocaleLowerCase()) + 's")\n';
+            model = model + '@@map("' + (tableNameLow) + 's")\n';
+            //  model = model + '@@map("' + (await Util.snackCase(tableName)) + 's")\n'
             model = model + "}\n";
             console.log(model);
             return model;

@@ -15,11 +15,11 @@ import { DevCreateSchema } from "./dev-create-schema";
 export class DevCreateFile {
     static async createFiles(tabelId: number): Promise<String> {
         const table = await DevUtil.getTable(tabelId)
-        const tableName = (await Util.lowerFirstLetter(table.name))
+        // const tableName = (await Util.lowerFirstLetter(table.name))
+         const tableName = (await Util.camelCase(await Util.capitalizeFirstLetter(table.name)))
         const tableNameCamelCase = await Util.camelCase(tableName)
         const fileName = await Util.fileNameFormat(tableName)
         const columns = await DevUtil.getColoumn(tabelId)
-        console.log(tableName + '======CamelCase===' + tableNameCamelCase + ' snack case : ' + fileName)
 
         let folder = '/Users/macbook/Mugi_data/workspace/typescript/belajar-typescript-restful-api/'
         let file = ''

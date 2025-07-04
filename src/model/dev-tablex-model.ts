@@ -31,6 +31,7 @@ name: string,
 desc: string,
 page : number,
 size : number,
+project_id: number,
 }
 
 //toDev_tablexResponse

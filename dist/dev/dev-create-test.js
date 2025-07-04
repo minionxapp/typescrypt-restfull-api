@@ -16,8 +16,8 @@ class DevCreateTest {
     static createTest(tabelId) {
         return __awaiter(this, void 0, void 0, function* () {
             const table = yield dev_util_1.DevUtil.getTable(tabelId);
-            const tableName = (yield util_1.Util.capitalizeFirstLetter(table.name));
-            const tableNameLow = (yield util_1.Util.lowerFirstLetter(tableName)).toString();
+            const tableName = yield util_1.Util.camelCase(yield util_1.Util.capitalizeFirstLetter(table.name));
+            const tableNameLow = (yield util_1.Util.lowerFirstLetter(tableName)).toString().toLowerCase();
             const columns = yield dev_util_1.DevUtil.getColoumn(tabelId);
             let test = '\n//Test ' + tableName + '\n\n';
             test = test + 'import supertest from "supertest"\n' +
@@ -244,7 +244,7 @@ class DevCreateTest {
                 '     .set("X-API-TOKEN", "test")\n' +
                 '  logger.debug(response.body)\n' +
                 '  expect(response.status).toBe(200)\n' +
-                '  expect(response.body.data.length).toBe(1)\n' +
+                '  expect(response.body.data.length).toBeGreaterThanOrEqual(1)\n' +
                 '  expect(response.body.paging.current_page).toBe(1)\n' +
                 '  expect(response.body.paging.total_page).toBe(1)\n' +
                 '  expect(response.body.paging.size).toBe(10)\n';

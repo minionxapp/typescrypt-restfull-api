@@ -16,15 +16,15 @@ class DevCreateController {
     static createController(tabelId) {
         return __awaiter(this, void 0, void 0, function* () {
             const table = yield dev_util_1.DevUtil.getTable(tabelId);
-            const tableName = (yield util_1.Util.capitalizeFirstLetter(table.name));
+            const tableName = yield util_1.Util.camelCase(yield util_1.Util.capitalizeFirstLetter(table.name));
             const tableNameLow = (yield util_1.Util.lowerFirstLetter(tableName)).toString();
             const fileName = yield util_1.Util.fileNameFormat(tableName);
             const columns = yield dev_util_1.DevUtil.getColoumn(tabelId);
             let controller = '\n//Create Controller\n\n';
             controller = controller + 'import { Response,NextFunction } from "express";\n' +
                 'import { UserRequest } from "../type/user-request";\n' +
-                'import { Create' + tableName + 'Request,Search' + tableName + 'Request,Update' + tableName + 'Request } from "../model/' + fileName + '-model";\n' +
-                'import { ' + tableName + 'Service } from "../service/' + fileName + '-service";\n' +
+                'import { Create' + tableName + 'Request,Search' + tableName + 'Request,Update' + tableName + 'Request } from "../model/' + tableName + '-model";\n' +
+                'import { ' + tableName + 'Service } from "../service/' + tableName + '-service";\n' +
                 'import { number } from "zod";\n' +
                 'export class ' + tableName + 'Controller{\n' +
                 ' static async create(req:UserRequest,res:Response, next:NextFunction){\n' +

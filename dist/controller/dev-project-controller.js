@@ -71,7 +71,6 @@ class Dev_projectController {
     }
     static search(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            // console.log("search=====================")
             try {
                 const request = {
                     name: req.query.name,
@@ -80,8 +79,6 @@ class Dev_projectController {
                     size: req.query.size ? Number(req.query.size) : 10,
                 };
                 const response = yield dev_project_service_1.Dev_projectService.search(req.user, request);
-                // console.log("response=============")
-                // console.log(response)
                 res.status(200).json(response);
             }
             catch (e) {

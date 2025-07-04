@@ -15,7 +15,7 @@ const dev_model_1 = require("../dev/dev-model");
 class DevUtil {
     static getColoumn(tabelId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield database_1.prismaClient.devTableColumn.findMany({
+            const result = yield database_1.prismaClient.devTableKolom.findMany({
                 where: {
                     table_id: tabelId
                 }
@@ -26,7 +26,7 @@ class DevUtil {
     //ambil table
     static getTable(tabelId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield database_1.prismaClient.devTable.findFirst({
+            const result = yield database_1.prismaClient.dev_tablex.findFirst({
                 where: {
                     id: tabelId
                 }

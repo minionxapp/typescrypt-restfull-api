@@ -10,6 +10,8 @@ const user_controller_1 = require("../controller/user-controller");
 const contact_controller_1 = require("../controller/contact-controller");
 const dev_project_controller_1 = require("../controller/dev-project-controller");
 const dev_tablex_controller_1 = require("../controller/dev-tablex-controller");
+const DevTableKolom_controller_1 = require("../controller/DevTableKolom-controller");
+const DevDirektori_controller_1 = require("../controller/DevDirektori-controller");
 exports.apiRouter = express_1.default.Router();
 exports.apiRouter.use(auth_middleware_1.authMiddleware);
 //user api
@@ -35,3 +37,14 @@ exports.apiRouter.get("/api/dev_projects/:dev_projectId", dev_project_controller
 exports.apiRouter.put("/api/dev_projects/:dev_projectId", dev_project_controller_1.Dev_projectController.update);
 exports.apiRouter.delete("/api/dev_projects/:dev_projectId", dev_project_controller_1.Dev_projectController.remove);
 exports.apiRouter.get("/api/dev_projects", dev_project_controller_1.Dev_projectController.search);
+exports.apiRouter.post("/api/devTableKoloms", DevTableKolom_controller_1.DevTableKolomController.create);
+exports.apiRouter.get("/api/devTableKoloms/:devTableKolomId", DevTableKolom_controller_1.DevTableKolomController.get);
+exports.apiRouter.put("/api/devTableKoloms/:devTableKolomId", DevTableKolom_controller_1.DevTableKolomController.update);
+exports.apiRouter.delete("/api/devTableKoloms/:devTableKolomId", DevTableKolom_controller_1.DevTableKolomController.remove);
+exports.apiRouter.get("/api/devTableKoloms", DevTableKolom_controller_1.DevTableKolomController.search);
+//ROUTE DevDirektori
+exports.apiRouter.post("/api/devDirektoris", DevDirektori_controller_1.DevDirektoriController.create);
+exports.apiRouter.get("/api/devDirektoris/:devDirektoriId", DevDirektori_controller_1.DevDirektoriController.get);
+exports.apiRouter.put("/api/devDirektoris/:devDirektoriId", DevDirektori_controller_1.DevDirektoriController.update);
+exports.apiRouter.delete("/api/devDirektoris/:devDirektoriId", DevDirektori_controller_1.DevDirektoriController.remove);
+exports.apiRouter.get("/api/devDirektoris", DevDirektori_controller_1.DevDirektoriController.search);

@@ -6,7 +6,7 @@ import {DevUtil} from '../dev/dev-util'
 export class DevCreateValidation {
 static async createValidation(tabelId: number): Promise<String> {
         const table = await DevUtil.getTable(tabelId)
-        const tableName = (await Util.capitalizeFirstLetter(table.name))
+        const tableName = await Util.camelCase(await Util.capitalizeFirstLetter(table.name))
         const columns = await DevUtil.getColoumn(tabelId)
         let validatex = "\n//CREATE validation " + tableName + "-validation.ts\n"
         validatex = validatex + '//CREATE validation\n'

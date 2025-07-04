@@ -28,6 +28,7 @@ class Dev_tablexController {
     }
     static get(req /*sudah login*/, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log("get");
             try {
                 const dev_tablexId = Number(req.params.dev_tablexId);
                 const response = yield dev_tablex_service_1.Dev_tablexService.get(req.user, dev_tablexId);
@@ -75,6 +76,7 @@ class Dev_tablexController {
                 const request = {
                     name: req.query.name,
                     desc: req.query.desc,
+                    project_id: Number(req.query.project_id),
                     page: req.query.page ? Number(req.query.page) : 1,
                     size: req.query.size ? Number(req.query.size) : 10,
                 };
@@ -89,6 +91,7 @@ class Dev_tablexController {
     //===========================added============
     static getByProjectId(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log("getByProjectId");
             try {
                 const dev_tablexId = Number(req.params.dev_tablexId);
                 const response = yield dev_tablex_service_1.Dev_tablexService.getByProjectId(req.user, dev_tablexId);

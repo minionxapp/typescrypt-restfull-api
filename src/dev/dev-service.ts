@@ -17,7 +17,7 @@ export class DevService {
     }
     // ambil table
     static async getTable(tabelId: number): Promise<DevTableResponse> {
-        const result = await prismaClient.devTable.findFirst({
+        const result = await prismaClient.dev_tablex.findFirst({
             where: {
                 id: tabelId
             }

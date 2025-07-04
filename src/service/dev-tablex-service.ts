@@ -77,6 +77,7 @@ export class Dev_tablexService {
         const searchRequest = Validation.validate(Dev_tablexValidation.SEARCH, request);
         const skip = (searchRequest.page - 1) * searchRequest.size;
         const filters = [];
+        console.log("kkkkk ::; "+JSON.stringify(request))
         // check if name exists
         if (searchRequest.name) {
             filters.push({
@@ -85,6 +86,7 @@ export class Dev_tablexService {
                 }
             })
         }
+        
         // check if desc exists
         if (searchRequest.desc) {
             filters.push({
@@ -93,9 +95,10 @@ export class Dev_tablexService {
                 }
             })
         }
+
         const dev_tablexs = await prismaClient.dev_tablex.findMany({
             where: {
-                // username: user.username,
+                project_id: request.project_id,
                 AND: filters
             },
             take: searchRequest.size,
@@ -104,6 +107,7 @@ export class Dev_tablexService {
         const total = await prismaClient.dev_tablex.count({
             where: {
                 //username: user.username,
+                 project_id: request.project_id,
                 AND: filters
             },
         })

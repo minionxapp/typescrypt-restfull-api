@@ -16,11 +16,11 @@ class DevCreateFile {
     static createFiles(tabelId) {
         return __awaiter(this, void 0, void 0, function* () {
             const table = yield dev_util_1.DevUtil.getTable(tabelId);
-            const tableName = (yield util_1.Util.lowerFirstLetter(table.name));
+            // const tableName = (await Util.lowerFirstLetter(table.name))
+            const tableName = (yield util_1.Util.camelCase(yield util_1.Util.capitalizeFirstLetter(table.name)));
             const tableNameCamelCase = yield util_1.Util.camelCase(tableName);
             const fileName = yield util_1.Util.fileNameFormat(tableName);
             const columns = yield dev_util_1.DevUtil.getColoumn(tabelId);
-            console.log(tableName + '======CamelCase===' + tableNameCamelCase + ' snack case : ' + fileName);
             let folder = '/Users/macbook/Mugi_data/workspace/typescript/belajar-typescript-restful-api/';
             let file = '';
             const folderModel = 'src/model/'; //'src/model/'

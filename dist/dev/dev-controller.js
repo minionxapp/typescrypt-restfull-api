@@ -24,6 +24,7 @@ class DevController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const tabelId = Number(req.params.tableId);
+                console.log("disni test .............." + tabelId);
                 res.status(200).json({
                     data: {
                         schema: yield dev_create_schema_1.DevCreateSchema.createSchema(tabelId),

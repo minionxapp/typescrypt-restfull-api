@@ -16,7 +16,7 @@ class DevCreateValidation {
     static createValidation(tabelId) {
         return __awaiter(this, void 0, void 0, function* () {
             const table = yield dev_util_1.DevUtil.getTable(tabelId);
-            const tableName = (yield util_1.Util.capitalizeFirstLetter(table.name));
+            const tableName = yield util_1.Util.camelCase(yield util_1.Util.capitalizeFirstLetter(table.name));
             const columns = yield dev_util_1.DevUtil.getColoumn(tabelId);
             let validatex = "\n//CREATE validation " + tableName + "-validation.ts\n";
             validatex = validatex + '//CREATE validation\n';
