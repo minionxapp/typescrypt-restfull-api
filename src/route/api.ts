@@ -54,4 +54,3 @@ apiRouter.get("/api/devDirektoris/:devDirektoriId",DevDirektoriController.get)
 apiRouter.put("/api/devDirektoris/:devDirektoriId",DevDirektoriController.update)
 apiRouter.delete("/api/devDirektoris/:devDirektoriId", DevDirektoriController.remove)
 apiRouter.get("/api/devDirektoris", DevDirektoriController.search)
-

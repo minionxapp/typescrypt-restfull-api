@@ -36,7 +36,7 @@ export class DevCreateService {
         for (let index = 0; index < columns.length; index++) {
             const element = columns[index];
             if (element.is_uniq == 'Y') {
-            servicex = servicex +'const total'+element.name+'Uniq = await prismaClient.user.count({\n'+
+            servicex = servicex +'const total'+element.name+'Uniq = await prismaClient.'+(await Util.lowerFirstLetter(tableName)).toString()+'.count({\n'+
                 'where: {\n'+
                 '    '+element.name+' : createRequest.'+element.name+'\n'+
                 '}\n'+

@@ -2,10 +2,10 @@ import { DevTableColumn } from "@prisma/client"
 import { prismaClient } from "../application/database"
 import { Util } from "../util/util";
 import { DevTableColumnResponse, DevTableResponse, toDevTableColumnResponse, toDevTableResponse } from "../dev/dev-model"
-import {DevUtil} from '../dev/dev-util'
+import { DevUtil } from '../dev/dev-util'
 
 export class DevCreateTest {
- static async createTest(tabelId: number): Promise<String> {
+    static async createTest(tabelId: number): Promise<String> {
         const table = await DevUtil.getTable(tabelId)
         const tableName = await Util.camelCase(await Util.capitalizeFirstLetter(table.name))
         const tableNameLow = (await Util.lowerFirstLetter(tableName)).toString().toLowerCase()
@@ -14,8 +14,10 @@ export class DevCreateTest {
         let test = '\n//Test ' + tableName + '\n\n'
         test = test + 'import supertest from "supertest"\n' +
             ' import { web } from "../src/application/web"\n' +
-            ' import { ' + tableName + 'Test, UserTest } from "../test/test-util"\n' +
-            ' import { logger } from "../src/application/logging"\n'
+            ' import { ' + ' UserTest } from "../test/test-util"\n' +
+            ' import { logger } from "../src/application/logging"\n' +
+            'import { prismaClient } from "../src/application/database";\n' +
+            'import {' + tableName + 'Test} from "../test/util/' + tableName + '-util"'
         //create test
         test = test + '//Create test\n' +
             ' describe("POST /api/' + tableNameLow + 's", () => {\n' +
@@ -28,7 +30,15 @@ export class DevCreateTest {
             ' await ' + tableName + 'Test.deleteAll() //buatkan di util-test dulu\n' +
             ' await UserTest.delete()\n' +
             ' })\n'
-        test = test + pratest
+        let pratest2 = ' beforeEach(async () => {\n' +
+            ' await UserTest.create()\n' +
+            ' //await ' + tableName + 'Test.create()\n' +
+            ' }) \n'+
+            ' afterEach(async () => {\n' +
+            ' await ' + tableName + 'Test.deleteAll() //buatkan di util-test dulu\n' +
+            ' await UserTest.delete()\n' +
+            ' })\n'
+        test = test + pratest2
 
         test = test + ' it("should create new ' + tableNameLow + '", async () => {\n' +
             ' const response = await supertest(web)\n' +
@@ -76,9 +86,13 @@ export class DevCreateTest {
         for (let index = 0; index < columns.length; index++) {
             const element = columns[index];
             if (element.type == 'Varchar') {
-                if (element.name == 'username') {
-                    test = test + element.name + ':"test' + '",\n'
-                } else {
+                if (element.is_null == 'N') {
+                    test = test + element.name + ':null' + ',\n'
+                }
+                // if (element.name == 'username') {
+                //     test = test + element.name + ':"test' + '",\n'
+                //} 
+                else {
                     test = test + element.name + ':"' + '",\n'
                 }
             }
@@ -196,10 +210,15 @@ export class DevCreateTest {
         for (let index = 0; index < columns.length; index++) {
             const element = columns[index];
             if (element.type == 'Varchar') {
-                if (element.name == 'username') {
-                    test = test + element.name + ':"test' + '",\n'
+                // if (element.name == 'username') {
+                //     test = test + element.name + ':"test' + '",\n'
+                // } else {
+                //     test = test + element.name + ':"' + '",\n'
+                // }
+                if (element.is_null == 'Y') {
+                    test = test + element.name + ':"test' + '",\n';
                 } else {
-                    test = test + element.name + ':"' + '",\n'
+                    test = test + element.name + ':null' + ',\n';
                 }
             }
             if (element.type == 'Number') {

@@ -21,7 +21,7 @@ class DevDirektoriService {
         return __awaiter(this, void 0, void 0, function* () {
             const createRequest = validation_1.Validation.validate(DevDirektori_validation_1.DevDirektoriValidation.CREATE, request);
             //belum ada validasi bila tidak boleh sama (uniq) dalam kolom
-            const totalusernameUniq = yield database_1.prismaClient.user.count({
+            const totalusernameUniq = yield database_1.prismaClient.devDirektori.count({
                 where: {
                     username: createRequest.username
                 }

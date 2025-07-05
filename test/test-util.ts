@@ -1,6 +1,6 @@
 import { prismaClient } from "../src/application/database";
 import bcrypt from "bcrypt"
-import { User, Contact, Tablecoba, Dev_tablex, Dev_project, DevTableKolom, DevDirektori } from "@prisma/client";
+import { User, Contact, Tablecoba, Dev_tablex, Dev_project, DevTableKolom } from "@prisma/client";
 
 export class UserTest {
     //unutk menghapus user
@@ -222,33 +222,33 @@ export class DevTableKolomTest {
 //tambahkan DevTableKolom pada import { User, Contact, Tablecoba } from "@prisma/client";
 
 
-export class DevDirektoriTest {
-    static async deleteAll() {
-        await prismaClient.devDirektori.deleteMany({
-            where: {
-                create_by: "administrator"
-            }
-        })
-    }
-    static async create() {
-        await prismaClient.devDirektori.create({
-            data: {
-                username: "test",
-                direktori: "test",
-                create_by: "administrator"
-            }
-        })
-    }
-    static async get(): Promise<DevDirektori> {
-        const devDirektori = await prismaClient.devDirektori.findFirst({
-            where: {
-                create_by: "administrator"
-            }
-        })
-        if (!devDirektori) {
-            throw new Error("DevDirektori is not found")
-        }
-        return devDirektori
-    }
-}
+// export class DevDirektoriTest {
+//     static async deleteAll() {
+//         await prismaClient.devDirektori.deleteMany({
+//             where: {
+//                 create_by: "administrator"
+//             }
+//         })
+//     }
+//     static async create() {
+//         await prismaClient.devDirektori.create({
+//             data: {
+//                 username: "test",
+//                 direktori: "test",
+//                 create_by: "administrator"
+//             }
+//         })
+//     }
+//     static async get(): Promise<DevDirektori> {
+//         const devDirektori = await prismaClient.devDirektori.findFirst({
+//             where: {
+//                 create_by: "administrator"
+//             }
+//         })
+//         if (!devDirektori) {
+//             throw new Error("DevDirektori is not found")
+//         }
+//         return devDirektori
+//     }
+// }
 //tambahkan DevDirektori pada import { User, Contact, Tablecoba } from "@prisma/client";

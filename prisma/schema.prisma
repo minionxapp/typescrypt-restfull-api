@@ -175,3 +175,7 @@ model DevDirektori {
 
   @@map("dev_direktoris")
 }
+
+
+
+

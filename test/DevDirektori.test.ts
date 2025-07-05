@@ -2,14 +2,15 @@
 
 import supertest from "supertest"
 import { web } from "../src/application/web"
-import { DevDirektoriTest, UserTest } from "../test/test-util"
+import { UserTest } from "../test/test-util"
 import { logger } from "../src/application/logging"
-//Create test
+import { prismaClient } from "../src/application/database";
+import { DevDirektoriTest } from "../test/util/DevDirektori-util"//Create test
 describe("POST /api/devdirektoris", () => {
 
     beforeEach(async () => {
         await UserTest.create()
-        await DevDirektoriTest.create()
+        //await DevDirektoriTest.create()
     })
     afterEach(async () => {
         await DevDirektoriTest.deleteAll() //buatkan di util-test dulu
@@ -34,7 +35,7 @@ describe("POST /api/devdirektoris", () => {
             .post("/api/devdirektoris")
             .set("X-API-TOKEN", "test")
             .send({
-                username: "test",
+                username: null,
                 direktori: "",
             })
         logger.debug(response.body)
@@ -108,8 +109,8 @@ describe("PUT /api/devdirektoris/:devdirektoriId", () => {
             .put(`/api/devdirektoris/${devdirektori.id}`)
             .set("X-API-TOKEN", "test")
             .send({
-                username: "test",
-                direktori: "",
+                username: null,
+                direktori: "test",
             })
         logger.debug(response.body)
         expect(response.status).toBe(400)

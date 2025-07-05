@@ -1,3 +1,5 @@
+
+
 //Create Service 
 
 import { prismaClient } from "../application/database";
@@ -11,7 +13,7 @@ export class DevDirektoriService {
     static async create(user: User, request: CreateDevDirektoriRequest): Promise<DevDirektoriResponse> {
         const createRequest = Validation.validate(DevDirektoriValidation.CREATE, request)
         //belum ada validasi bila tidak boleh sama (uniq) dalam kolom
-        const totalusernameUniq = await prismaClient.user.count({
+        const totalusernameUniq = await prismaClient.devDirektori.count({
             where: {
                 username: createRequest.username
             }
@@ -129,3 +131,4 @@ export class DevDirektoriService {
     }
 
 }
+
