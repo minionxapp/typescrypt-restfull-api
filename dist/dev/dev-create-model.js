@@ -20,7 +20,7 @@ class DevCreateModel {
             const tableNameCamel = yield util_1.Util.camelCase(tableName);
             const columns = yield dev_util_1.DevUtil.getColoumn(tabelId);
             //tabelResponse
-            let model = '\n//CreateModel\n//' + tableNameCamel + '-model.ts\n\n';
+            let model = '\n//Create Model ' + tableNameCamel + '-model.ts\n\n';
             model = model + "import { " + tableNameCamel + " } from '@prisma/client'\n";
             model = model + 'export type ' + tableNameCamel + 'Response = {\nid: number,\n';
             for (let index = 0; index < columns.length; index++) {

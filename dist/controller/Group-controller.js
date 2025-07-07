@@ -10,15 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DevDirektoriController = void 0;
-const DevDirektori_service_1 = require("../service/DevDirektori-service");
-class DevDirektoriController {
+exports.GroupController = void 0;
+const Group_service_1 = require("../service/Group-service");
+class GroupController {
     static create(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const request = req.body;
-                //belum ada validasi bila tidak boleh sama (uniq) dalam kolom
-                const response = yield DevDirektori_service_1.DevDirektoriService.create(req.user, request);
+                const response = yield Group_service_1.GroupService.create(req.user, request);
                 res.status(200).json({
                     data: response
                 });
@@ -30,10 +29,9 @@ class DevDirektoriController {
     }
     static get(req /*sudah login*/, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('DevDirektoriService get ........');
             try {
-                const devDirektoriId = Number(req.params.devDirektoriId);
-                const response = yield DevDirektori_service_1.DevDirektoriService.get(req.user, devDirektoriId);
+                const groupId = Number(req.params.groupId);
+                const response = yield Group_service_1.GroupService.get(req.user, groupId);
                 res.status(200).json({
                     data: response
                 });
@@ -47,8 +45,8 @@ class DevDirektoriController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const request = req.body;
-                request.id = Number(req.params.devDirektoriId);
-                const response = yield DevDirektori_service_1.DevDirektoriService.update(req.user, request);
+                request.id = Number(req.params.groupId);
+                const response = yield Group_service_1.GroupService.update(req.user, request);
                 res.status(200).json({
                     data: response
                 });
@@ -61,8 +59,8 @@ class DevDirektoriController {
     static remove(req /*sudah login*/, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const devDirektoriId = Number(req.params.devDirektoriId);
-                const response = yield DevDirektori_service_1.DevDirektoriService.remove(req.user, devDirektoriId);
+                const groupId = Number(req.params.groupId);
+                const response = yield Group_service_1.GroupService.remove(req.user, groupId);
                 res.status(200).json({
                     data: "OK"
                 });
@@ -74,15 +72,16 @@ class DevDirektoriController {
     }
     static search(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('DevDirektoriService search ........');
             try {
                 const request = {
-                    username: req.query.username,
-                    direktori: req.query.direktori,
+                    name: req.query.name,
+                    desc: req.query.desc,
+                    pic: req.query.pic,
+                    status: req.query.status,
                     page: req.query.page ? Number(req.query.page) : 1,
                     size: req.query.size ? Number(req.query.size) : 10,
                 };
-                const response = yield DevDirektori_service_1.DevDirektoriService.search(req.user, request);
+                const response = yield Group_service_1.GroupService.search(req.user, request);
                 res.status(200).json(response);
             }
             catch (e) {
@@ -91,4 +90,4 @@ class DevDirektoriController {
         });
     }
 }
-exports.DevDirektoriController = DevDirektoriController;
+exports.GroupController = GroupController;

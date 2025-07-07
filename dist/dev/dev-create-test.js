@@ -19,13 +19,13 @@ class DevCreateTest {
             const tableName = yield util_1.Util.camelCase(yield util_1.Util.capitalizeFirstLetter(table.name));
             const tableNameLow = (yield util_1.Util.lowerFirstLetter(tableName)).toString().toLowerCase();
             const columns = yield dev_util_1.DevUtil.getColoumn(tabelId);
-            let test = '\n//Test ' + tableName + '\n\n';
+            let test = '\n//Create Test ' + tableName + '-test.ts\n\n';
             test = test + 'import supertest from "supertest"\n' +
                 ' import { web } from "../src/application/web"\n' +
                 ' import { ' + ' UserTest } from "../test/test-util"\n' +
                 ' import { logger } from "../src/application/logging"\n' +
                 'import { prismaClient } from "../src/application/database";\n' +
-                'import {' + tableName + 'Test} from "../test/util/' + tableName + '-util"';
+                'import {' + tableName + 'Test} from "../test/util/' + tableName + '-util-test"';
             //create test
             test = test + '//Create test\n' +
                 ' describe("POST /api/' + tableNameLow + 's", () => {\n' +

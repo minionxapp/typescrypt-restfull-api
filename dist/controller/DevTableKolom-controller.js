@@ -33,12 +33,30 @@ class DevTableKolomController {
     }
     static get(req /*sudah login*/, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log('DevTableKolomService get ........' + req.params.devTableKolomId);
             try {
                 const devTableKolomId = Number(req.params.devTableKolomId);
                 const response = yield DevTableKolom_service_1.DevTableKolomService.get(req.user, devTableKolomId);
                 res.status(200).json({
                     data: response
                 });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    static getTableId(req /*sudah login*/, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('DevTableKolomService getTableId ........' + req.params.devTableKolomTableId);
+            try {
+                const devTableKolomTableId = Number(req.params.devTableKolomTableId);
+                const response = yield DevTableKolom_service_1.DevTableKolomService.getTableId(req.user, devTableKolomTableId);
+                res.status(200).json({
+                    data: response
+                });
+                console.log("result getTableId....................");
+                console.log(response);
             }
             catch (error) {
                 next(error);
@@ -76,6 +94,7 @@ class DevTableKolomController {
     }
     static search(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log('DevTableKolomService search ........');
             try {
                 const request = {
                     name: req.query.name,

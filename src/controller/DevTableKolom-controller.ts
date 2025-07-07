@@ -22,9 +22,23 @@ export class DevTableKolomController {
         }
     }
     static async get(req: UserRequest/*sudah login*/, res: Response, next: NextFunction) {
+         console.log('DevTableKolomService get ........'+req.params.devTableKolomId)
         try {
             const devTableKolomId = Number(req.params.devTableKolomId)
             const response = await DevTableKolomService.get(req.user!, devTableKolomId)
+            res.status(200).json({
+                data: response
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+     static async getTableId(req: UserRequest/*sudah login*/, res: Response, next: NextFunction) {
+         console.log('DevTableKolomService getTableId ........'+req.params.devTableKolomTableId)
+        try {
+            const devTableKolomTableId = Number(req.params.devTableKolomTableId)
+            const response = await DevTableKolomService.getTableId(req.user!, devTableKolomTableId)
             res.status(200).json({
                 data: response
             })
@@ -56,6 +70,7 @@ export class DevTableKolomController {
         }
     }
     static async search(req: UserRequest, res: Response, next: NextFunction) {
+        console.log('DevTableKolomService search ........')
         try {
             const request: SearchDevTableKolomRequest = {
                 name: req.query.name as string,

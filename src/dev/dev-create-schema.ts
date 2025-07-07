@@ -8,13 +8,12 @@ import {DevUtil} from '../dev/dev-util'
 
 export class DevCreateSchema{
 static async createSchema(tabelId: number): Promise<String> {
-    console.log("createSchema")
         const table = await DevUtil.getTable(tabelId)
         const tableName =await Util.camelCase( (await Util.capitalizeFirstLetter(table.name)))
         const tableNamex = (await Util.capitalizeFirstLetter(table.name))
         const columns = await DevUtil.getColoumn(tabelId)
          const tableNameLow = (await Util.lowerFirstLetter(tableNamex)).toString()
-        let model = "\n//Create Schema\n//schema.prisma\n\n"
+        let model = "\n//Create Schema "+tableName+"\n\n"
         model = model + 'model ' + (await Util.capitalizeFirstLetter(tableName)).toString() + ' {\n'
         model = model + 'id         Int    @id @default(autoincrement())\n'
         for (let index = 0; index < columns.length; index++) {

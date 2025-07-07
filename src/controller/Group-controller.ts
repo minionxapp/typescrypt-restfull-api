@@ -1,17 +1,15 @@
-
 //Create Controller
 
 import { Response, NextFunction } from "express";
 import { UserRequest } from "../type/user-request";
-import { CreateDevDirektoriRequest, SearchDevDirektoriRequest, UpdateDevDirektoriRequest } from "../model/DevDirektori-model";
-import { DevDirektoriService } from "../service/DevDirektori-service";
+import { CreateGroupRequest, SearchGroupRequest, UpdateGroupRequest } from "../model/Group-model";
+import { GroupService } from "../service/Group-service";
 import { number } from "zod";
-export class DevDirektoriController {
+export class GroupController {
     static async create(req: UserRequest, res: Response, next: NextFunction) {
         try {
-            const request: CreateDevDirektoriRequest = req.body as CreateDevDirektoriRequest;
-            //belum ada validasi bila tidak boleh sama (uniq) dalam kolom
-            const response = await DevDirektoriService.create(req.user!, request)
+            const request: CreateGroupRequest = req.body as CreateGroupRequest;
+            const response = await GroupService.create(req.user!, request)
             res.status(200).json({
                 data: response
             })
@@ -20,10 +18,9 @@ export class DevDirektoriController {
         }
     }
     static async get(req: UserRequest/*sudah login*/, res: Response, next: NextFunction) {
-        console.log('DevDirektoriService get ........')
         try {
-            const devDirektoriId = Number(req.params.devDirektoriId)
-            const response = await DevDirektoriService.get(req.user!, devDirektoriId)
+            const groupId = Number(req.params.groupId)
+            const response = await GroupService.get(req.user!, groupId)
             res.status(200).json({
                 data: response
             })
@@ -33,9 +30,9 @@ export class DevDirektoriController {
     }
     static async update(req: UserRequest/*sudah login*/, res: Response, next: NextFunction) {
         try {
-            const request: UpdateDevDirektoriRequest = req.body as UpdateDevDirektoriRequest;
-            request.id = Number(req.params.devDirektoriId)
-            const response = await DevDirektoriService.update(req.user!, request)
+            const request: UpdateGroupRequest = req.body as UpdateGroupRequest;
+            request.id = Number(req.params.groupId)
+            const response = await GroupService.update(req.user!, request)
             res.status(200).json({
                 data: response
             })
@@ -45,8 +42,8 @@ export class DevDirektoriController {
     }
     static async remove(req: UserRequest/*sudah login*/, res: Response, next: NextFunction) {
         try {
-            const devDirektoriId = Number(req.params.devDirektoriId)
-            const response = await DevDirektoriService.remove(req.user!, devDirektoriId)
+            const groupId = Number(req.params.groupId)
+            const response = await GroupService.remove(req.user!, groupId)
             res.status(200).json({
                 data: "OK"
             })
@@ -55,19 +52,19 @@ export class DevDirektoriController {
         }
     }
     static async search(req: UserRequest, res: Response, next: NextFunction) {
-         console.log('DevDirektoriService search ........')
         try {
-            const request: SearchDevDirektoriRequest = {
-                username: req.query.username as string,
-                direktori: req.query.direktori as string,
+            const request: SearchGroupRequest = {
+                name: req.query.name as string,
+                desc: req.query.desc as string,
+                pic: req.query.pic as string,
+                status: req.query.status as string,
                 page: req.query.page ? Number(req.query.page) : 1,
                 size: req.query.size ? Number(req.query.size) : 10,
             }
-            const response = await DevDirektoriService.search(req.user!, request);
+            const response = await GroupService.search(req.user!, request);
             res.status(200).json(response);
         } catch (e) {
             next(e);
         }
     }
 }
-

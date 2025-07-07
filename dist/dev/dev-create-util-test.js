@@ -21,8 +21,10 @@ class DevCreateUtilTest {
             const tableNameLow = (yield util_1.Util.lowerFirstLetter(tableName)).toString();
             const columns = yield dev_util_1.DevUtil.getColoumn(tabelId);
             // (await Util.lowerFirstLetter(tableName)).toString()
-            let utiltest = '\n//CREATE UTIL-TEST ' + tableName + '\n//Tambahkan ke dalam file test-util.ts pada folder test \n' + '\n';
+            let utiltest = '\n//CREATE util-test ' + tableName + '-util.test.ts. \n' + '\n';
             //util-test delete
+            utiltest = utiltest + 'import { prismaClient } from "../../src/application/database";\n' +
+                'import { ' + tableName + '} from "@prisma/client";\n';
             utiltest = utiltest + 'export class ' + tableName + 'Test{\n';
             utiltest = utiltest + '  static async deleteAll(){\n' +
                 'await prismaClient.' + tableNameLow + '.deleteMany({\n' +

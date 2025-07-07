@@ -19,7 +19,7 @@ class DevCreateService {
             const tableName = yield util_1.Util.camelCase(yield util_1.Util.capitalizeFirstLetter(table.name));
             const columns = yield dev_util_1.DevUtil.getColoumn(tabelId);
             const fileName = yield util_1.Util.fileNameFormat(tableName);
-            let servicex = '\n//Create Service \n\n';
+            let servicex = '\n//Create Service ' + tableName + '-service.ts\n\n';
             servicex = servicex + 'import { prismaClient } from "../application/database";\n' +
                 'import { ResponseError } from "../error/response-error";\n' +
                 'import { ' + tableName + 'Response, Create' + tableName + 'Request, Search' + tableName + 'Request, to' + tableName + 'Response, Update' + tableName + 'Request } from "../model/' +

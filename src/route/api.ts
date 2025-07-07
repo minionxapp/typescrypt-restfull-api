@@ -42,6 +42,7 @@ apiRouter.delete("/api/dev_projects/:dev_projectId", Dev_projectController.remov
 apiRouter.get("/api/dev_projects", Dev_projectController.search)
 
 apiRouter.post("/api/devTableKoloms",DevTableKolomController.create)
+apiRouter.get("/api/devTableKoloms/tableid/:devTableKolomTableId",DevTableKolomController.getTableId)
 apiRouter.get("/api/devTableKoloms/:devTableKolomId",DevTableKolomController.get)
 apiRouter.put("/api/devTableKoloms/:devTableKolomId",DevTableKolomController.update)
 apiRouter.delete("/api/devTableKoloms/:devTableKolomId", DevTableKolomController.remove)
@@ -54,3 +55,11 @@ apiRouter.get("/api/devDirektoris/:devDirektoriId",DevDirektoriController.get)
 apiRouter.put("/api/devDirektoris/:devDirektoriId",DevDirektoriController.update)
 apiRouter.delete("/api/devDirektoris/:devDirektoriId", DevDirektoriController.remove)
 apiRouter.get("/api/devDirektoris", DevDirektoriController.search)
+
+import {GroupController } from "../controller/Group-controller";
+
+apiRouter.post("/api/groups",GroupController.create)
+apiRouter.get("/api/groups/:groupId",GroupController.get)
+apiRouter.put("/api/groups/:groupId",GroupController.update)
+apiRouter.delete("/api/groups/:groupId", GroupController.remove)
+apiRouter.get("/api/groups", GroupController.search)

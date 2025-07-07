@@ -15,13 +15,12 @@ const dev_util_1 = require("../dev/dev-util");
 class DevCreateSchema {
     static createSchema(tabelId) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("createSchema");
             const table = yield dev_util_1.DevUtil.getTable(tabelId);
             const tableName = yield util_1.Util.camelCase((yield util_1.Util.capitalizeFirstLetter(table.name)));
             const tableNamex = (yield util_1.Util.capitalizeFirstLetter(table.name));
             const columns = yield dev_util_1.DevUtil.getColoumn(tabelId);
             const tableNameLow = (yield util_1.Util.lowerFirstLetter(tableNamex)).toString();
-            let model = "\n//Create Schema\n//schema.prisma\n\n";
+            let model = "\n//Create Schema " + tableName + "\n\n";
             model = model + 'model ' + (yield util_1.Util.capitalizeFirstLetter(tableName)).toString() + ' {\n';
             model = model + 'id         Int    @id @default(autoincrement())\n';
             for (let index = 0; index < columns.length; index++) {

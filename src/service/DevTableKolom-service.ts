@@ -43,6 +43,17 @@ export class DevTableKolomService {
         const devTableKolom = await this.checkDevTableKolomMustexist(id)
         return toDevTableKolomResponse(devTableKolom)
     }
+     static async getTableId(user: User, devTableKolomTableId: number): Promise<Array<DevTableKolomResponse> >{
+        const devTableKoloms = await prismaClient.devTableKolom.findMany({
+            where: {
+                table_id: devTableKolomTableId,
+            }
+        })
+        if (!devTableKoloms) {
+            throw new ResponseError(404, "DevTableKolom not found")
+        }
+        return devTableKoloms.map(devTableKoloms => toDevTableKolomResponse(devTableKoloms))
+    }
 
     // UPDATE
     static async update(user: User, request: UpdateDevTableKolomRequest): Promise<DevTableKolomResponse> {

@@ -52,6 +52,20 @@ class DevTableKolomService {
             return (0, DevTableKolom_model_1.toDevTableKolomResponse)(devTableKolom);
         });
     }
+    static getTableId(user, devTableKolomTableId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const devTableKoloms = yield database_1.prismaClient.devTableKolom.findMany({
+                where: {
+                    table_id: devTableKolomTableId,
+                }
+            });
+            if (!devTableKoloms) {
+                throw new response_error_1.ResponseError(404, "DevTableKolom not found");
+            }
+            // return toDevTableKolomResponse(devTableKolom)
+            return devTableKoloms.map(devTableKoloms => (0, DevTableKolom_model_1.toDevTableKolomResponse)(devTableKoloms));
+        });
+    }
     // UPDATE
     static update(user, request) {
         return __awaiter(this, void 0, void 0, function* () {

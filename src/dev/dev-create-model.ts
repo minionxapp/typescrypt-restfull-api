@@ -13,7 +13,7 @@ export class DevCreateModel {
         const tableNameCamel =await Util.camelCase(tableName)
         const columns = await DevUtil.getColoumn(tabelId)
         //tabelResponse
-        let model = '\n//CreateModel\n//' + tableNameCamel + '-model.ts\n\n'
+        let model = '\n//Create Model ' + tableNameCamel + '-model.ts\n\n'
         model = model + "import { " + tableNameCamel + " } from '@prisma/client'\n"
 
         model = model + 'export type ' + tableNameCamel + 'Response = {\nid: number,\n'

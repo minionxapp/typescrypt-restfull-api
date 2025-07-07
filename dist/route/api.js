@@ -38,6 +38,7 @@ exports.apiRouter.put("/api/dev_projects/:dev_projectId", dev_project_controller
 exports.apiRouter.delete("/api/dev_projects/:dev_projectId", dev_project_controller_1.Dev_projectController.remove);
 exports.apiRouter.get("/api/dev_projects", dev_project_controller_1.Dev_projectController.search);
 exports.apiRouter.post("/api/devTableKoloms", DevTableKolom_controller_1.DevTableKolomController.create);
+exports.apiRouter.get("/api/devTableKoloms/tableid/:devTableKolomTableId", DevTableKolom_controller_1.DevTableKolomController.getTableId);
 exports.apiRouter.get("/api/devTableKoloms/:devTableKolomId", DevTableKolom_controller_1.DevTableKolomController.get);
 exports.apiRouter.put("/api/devTableKoloms/:devTableKolomId", DevTableKolom_controller_1.DevTableKolomController.update);
 exports.apiRouter.delete("/api/devTableKoloms/:devTableKolomId", DevTableKolom_controller_1.DevTableKolomController.remove);
@@ -48,3 +49,9 @@ exports.apiRouter.get("/api/devDirektoris/:devDirektoriId", DevDirektori_control
 exports.apiRouter.put("/api/devDirektoris/:devDirektoriId", DevDirektori_controller_1.DevDirektoriController.update);
 exports.apiRouter.delete("/api/devDirektoris/:devDirektoriId", DevDirektori_controller_1.DevDirektoriController.remove);
 exports.apiRouter.get("/api/devDirektoris", DevDirektori_controller_1.DevDirektoriController.search);
+const Group_controller_1 = require("../controller/Group-controller");
+exports.apiRouter.post("/api/groups", Group_controller_1.GroupController.create);
+exports.apiRouter.get("/api/groups/:groupId", Group_controller_1.GroupController.get);
+exports.apiRouter.put("/api/groups/:groupId", Group_controller_1.GroupController.update);
+exports.apiRouter.delete("/api/groups/:groupId", Group_controller_1.GroupController.remove);
+exports.apiRouter.get("/api/groups", Group_controller_1.GroupController.search);

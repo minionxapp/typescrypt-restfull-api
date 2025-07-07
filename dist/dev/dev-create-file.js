@@ -28,7 +28,7 @@ class DevCreateFile {
             const folderController = 'src/controller/'; //'src/controller/'
             const folderService = 'src/service/'; //'src/service/'
             const folderTest = 'test/';
-            const folderUtilTest = 'src/coba/'; //'test/'
+            const folderUtilTest = 'test/util/';
             const folderRoute = 'src/coba/'; //'test/'
             const folderSchema = 'src/coba/'; //'test/'
             // file = folder + folderModel + fileName + '-model.ts\n'
@@ -54,7 +54,7 @@ class DevCreateFile {
             file = file + folder + folderService + tableName + '-service.ts';
             file = file + folder + folderController + tableName + '-controller.ts';
             file = file + folder + folderTest + tableName + '.test.ts';
-            file = file + folder + folderUtilTest + tableName + '-util-test.txt';
+            file = file + folder + folderUtilTest + tableName + '-util-test.ts';
             file = file + folder + folderRoute + tableName + '-route.txt';
             file = file + folder + folderSchema + tableName + '-schema.txt\n';
             file = file + "\nREMOVE FILE";
@@ -64,7 +64,7 @@ class DevCreateFile {
             file = file + folder + folderService + tableName + '-service.ts';
             file = file + folder + folderController + tableName + '-controller.ts';
             file = file + folder + folderTest + tableName + '.test.ts';
-            file = file + folder + folderUtilTest + tableName + '-util-test.txt';
+            file = file + folder + folderUtilTest + tableName + '-util-test.ts';
             file = file + folder + folderRoute + tableName + '-route.txt';
             file = file + folder + folderSchema + tableName + '-schema.txt\n';
             // console.log(file)

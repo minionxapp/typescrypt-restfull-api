@@ -19,7 +19,6 @@ class DevCreateValidation {
             const tableName = yield util_1.Util.camelCase(yield util_1.Util.capitalizeFirstLetter(table.name));
             const columns = yield dev_util_1.DevUtil.getColoumn(tabelId);
             let validatex = "\n//CREATE validation " + tableName + "-validation.ts\n";
-            validatex = validatex + '//CREATE validation\n';
             validatex = validatex + '\nimport { z, ZodType } from "zod"; \n\n';
             validatex = validatex + 'export class ' + tableName + 'Validation {\n';
             validatex = validatex + 'static readonly CREATE: ZodType = z.object({\n';
